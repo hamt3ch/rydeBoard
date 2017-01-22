@@ -5,7 +5,7 @@ import ride from './ride';
 export default ({ config, db }) => {
 	let api = Router();
 
-	api.use('/ride', ride({ config, db }));
+	api.use('/rides', ride({ config, db }));
 
 	// perhaps expose some API metadata at the root
 	api.get('/', (req, res) => {
