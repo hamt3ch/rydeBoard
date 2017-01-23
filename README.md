@@ -1,9 +1,7 @@
-Express & ES6 REST API Boilerplate
+Ryde Board
 ==================================
 
 [![bitHound Score](https://www.bithound.io/github/developit/express-es6-rest-api/badges/score.svg)](https://www.bithound.io/github/developit/express-es6-rest-api)
-
-This is a straightforward boilerplate for building REST APIs with ES6 and Express.
 
 - ES6 support via [babel](https://babeljs.io)
 - REST resources as middleware via [resource-router-middleware](https://github.com/developit/resource-router-middleware)
@@ -53,7 +51,7 @@ docker run -p 8080:8080 es6/api-service
 
 Docker Demo
 -------------------------
-It's supposed to be pretty easy to take your Docker to your favourite cloud service, here's a demo of what's our Dockerized bolierplate is like: [https://docker-deployment-yudfxfiaja.now.sh/api](https://docker-deployment-yudfxfiaja.now.sh/api)
+It's supposed to be pretty easy to take your Docker to your favourite cloud service, here's a demo of what's our Dockerized bolierplate is like: [Ride endpoint](https://uryde-dev.now.sh/api)
 
 License
 -------

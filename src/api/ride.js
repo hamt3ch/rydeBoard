@@ -1,23 +1,27 @@
 import resource from 'resource-router-middleware';
-import facets from '../models/facets';
+import Ride from '../models/ride';
 
 export default ({ config, db }) => resource({
 
 	/** Property name to store preloaded entity on `request`. */
-	id : 'facet',
+	id : 'ride',
 
 	/** For requests with an `id`, you can auto-load the entity.
 	 *  Errors terminate the request, success sets `req[id] = data`.
 	 */
 	load(req, id, callback) {
-		let facet = facets.find( facet => facet.id===id ),
-			err = facet ? null : 'Not found';
-		callback(err, facet);
+		// let facet = facets.find( facet => facet.id===id ),
+		// 	err = facet ? null : 'Not found';
+		// callback(err, facet);
 	},
 
 	/** GET / - List all entities */
 	index({ params }, res) {
-		res.json(facets);
+    Ride.where('createdBy')
+    .exec((err, rides) => {
+      if (err) return handleError(err);
+      res.json(rides);
+    })
 	},
 
 	/** POST / - Create a new entity */
