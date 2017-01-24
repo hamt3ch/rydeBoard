@@ -30,7 +30,6 @@ export default ({ config, db }) => resource({
 	create({ body }, res) {
 		if(requestValid(body)) {
 			configureBody(body, (data) => {
-				console.log(data)
 				var rideToSave = new Ride(data);
 				rideToSave.save((err) => { // problem saving data to db
 					if (err) return console.log(err);
