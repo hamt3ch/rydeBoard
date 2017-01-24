@@ -1,7 +1,7 @@
 import resource from 'resource-router-middleware';
 import Ride from '../models/ride';
 import moment from 'moment';
-import geocoder from '../service/google.maps'
+import {geocoder} from '../service'
 
 export default ({ config, db }) => resource({
 
