@@ -115,7 +115,7 @@ var geocodeAddress = (addr,callback) => {
 				"longitude": res[0].value[0].longitude
 			},
 			"arrival": {
-				"latitude":res[1].value[0].latitude,
+				"latitude": res[1].value[0].latitude,
 				"longitude": res[1].value[0].longitude
 			}
 		})
