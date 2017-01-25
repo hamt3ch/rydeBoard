@@ -1,17 +1,17 @@
+import moment from 'moment';
 import resource from 'resource-router-middleware';
 import Ride from '../models/ride';
-import moment from 'moment';
-import {geocoder} from '../service'
+import { geocoder } from '../service';
 
 export default ({ config, db }) => resource({
 
-	/** Property name to store preloaded entity on `request`. */
-	id : 'ride',
+/** Property name to store preloaded entity on `request`. */
+  id: 'ride',
 
-	/** For requests with an `id`, you can auto-load the entity.
-	*  Errors terminate the request, success sets `req[id] = data`.
-	*/
-	load(req, id, callback) {
+/** For requests with an `id`, you can auto-load the entity.
+*  Errors terminate the request, success sets `req[id] = data`.
+*/
+  load(req, id, callback) {
 		// let facet = facets.find( facet => facet.id===id ),
 		// 	err = facet ? null : 'Not found';
 		// callback(err, facet);
