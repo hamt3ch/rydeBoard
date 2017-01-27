@@ -102,7 +102,7 @@ export default ({ config, db }) => resource({
       configureBody(body, (data) => {
         const rideToSave = new Ride(data);
         rideToSave.save((err) => { // problem saving data to db
-          if (err) return console.log(err);
+          if (err) return handleError(err);
           return true;
         });
         res.json(rideToSave); // Send back ride.json for confirmation
