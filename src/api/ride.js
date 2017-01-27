@@ -77,9 +77,14 @@ export default ({ config, db }) => resource({
 *  Errors terminate the request, success sets `req[id] = data`.
 */
   load(req, id, callback) {
-  // let facet = facets.find( facet => facet.id===id ),
-  // err = facet ? null : 'Not found';
-  // callback(err, facet);
+    // let facet = facets.find( facet => facet.id===id ),
+    // err = facet ? null : 'Not found';
+    // callback(err, facet);
+    // middleware for id calls
+    Ride.findOne({ _id: id }, (err, ride) => {
+      if (err) return callback(err, null); // handleError() method should go here based upon message
+      return callback(null, ride);
+    });
   },
 
   /** GET / - List all entities */
@@ -108,17 +113,17 @@ export default ({ config, db }) => resource({
   },
 
   /** GET /:id - Return a given entity */
-  read({ facet }, res) {
-    res.json(facet);
+  read({ ride }, res) {
+    res.json(ride);
   },
 
   /** PUT /:id - Update a given entity */
-  update({ facet, body }, res) {
+  update({ ride, body }, res) {
     res.sendStatus(204);
   },
 
   /** DELETE /:id - Delete a given entity */
-  delete({ facet }, res) {
+  delete({ ride }, res) {
     res.sendStatus(204);
   },
 });
