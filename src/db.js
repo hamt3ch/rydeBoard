@@ -7,5 +7,5 @@ export default callback => {
 	});
 
 	callback(mongoose);
-	
+
 }
