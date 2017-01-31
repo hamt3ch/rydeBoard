@@ -4,5 +4,8 @@
         "react",
         "jsx-a11y",
         "import"
-    ]
+    ],
+    "rules": {
+        "no-restricted-syntax": 0
+    }
 }

@@ -2,30 +2,15 @@ import moment from 'moment';
 import resource from 'resource-router-middleware';
 import Ride from '../models/ride';
 import { geocoder } from '../service';
+import Util from '../lib/util';
 
 /******************
  * Helper methods *
  ******************/
-const validateRequest = (body) => {
-  let count = 0;
-  for (var field in body) {
-    // check if any fields are empty
-    if (body[field] === '') {
-      return false;
-    }
-    count += 1;
-  }
-
-  // make sure date is valid
-  if (!moment(body.departure_time, 'MM-DD-YYYY h:mm a').isValid()) {
+const validateRideObject = (body) => {
+  if (!Util.allFieldsValid(body) || !moment(body.departure_time, 'MM-DD-YYYY h:mm a').isValid()) {
     return false;
   }
-
-  // make sure all fields are accounted for
-  if (count !== 5) {
-    return false;
-  }
-
   return true;
 };
 
@@ -44,7 +29,7 @@ const convertAddress = (address, callback) => {
     });
   })
   .catch((err) => {
-    console.log(err);
+    Util.handleError(err);
   });
 };
 
@@ -63,11 +48,6 @@ const configureBody = (body, data) => {
     response.arrival_latitude = callback.arrival.latitude;
     data(body);
   });
-};
-
-// TODO: fill out error handling for all request
-const handleError = (error) => {
-  console.log(error);
 };
 
 /*****************
@@ -96,18 +76,18 @@ export default ({ config, db }) => resource({
   index({ params }, response) {
     Ride.where('createdBy')
       .exec((err, rides) => {
-        if (err) return handleError(err);
+        if (err) return Util.handleError(err);
         return response.json(rides);
       });
   },
 
   /** POST / - Create a new entity */
   create({ body }, response) {
-    if (validateRequest(body)) {
+    if (validateRideObject(body)) {
       configureBody(body, (data) => {
         const rideToSave = new Ride(data);
         rideToSave.save((err) => { // problem saving data to db
-          if (err) return handleError(err);
+          if (err) return Util.handleError(err);
           return true;
         });
         response.json(rideToSave); // Send back ride.json for confirmation
