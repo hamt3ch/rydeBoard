@@ -1,24 +1,24 @@
-class Util {
+export default class Util {
   // TODO: fill out error handling for all requests
   static handleError(err) {
-    console.log("the error: " + err);
+    console.log('the error: ' + err);
   }
 
   static allFieldsValid(body) {
     let count = 0;
-  	for (var field in body) {
-  		// check if any fields are empty
+    /* eslint no-restricted-syntax: 0 */
+    for (const field in body) {
+      // check if any fields are empty
       if (body[field] === '') {
-         return false;
+        return false;
       }
       count += 1;
-  	}
+    }
 
-  	if (count !== 5) {
-  		return false;
-  	}
+    if (count !== 5) {
+      return false;
+    }
 
-  	return true;
+    return true;
   }
 }
-export default Util;

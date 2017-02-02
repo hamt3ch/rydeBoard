@@ -1,12 +1,12 @@
 import moment from 'moment';
 import resource from 'resource-router-middleware';
-import Ride from '../models/ride';
 import { geocoder } from '../service';
-import Util from '../lib/util';
+import Ride from '../models';
+import Util from '../lib';
 
-/******************
- * Helper methods *
- ******************/
+/**
+ * Helper methods
+ */
 const validateRideObject = (body) => {
   if (!Util.allFieldsValid(body) || !moment(body.departure_time, 'MM-DD-YYYY h:mm a').isValid()) {
     return false;
@@ -50,9 +50,9 @@ const configureBody = (body, data) => {
   });
 };
 
-/*****************
- * HTTP requests *
- *****************/
+/**
+ * HTTP requests
+ */
 export default ({ config, db }) => resource({
 
 // Property name to store preloaded entity on `request`.
@@ -109,6 +109,6 @@ export default ({ config, db }) => resource({
 
   /** DELETE /:id - Delete a given entity */
   delete({ ride }, response) {
-    reresponses.sendStatus(204);
+    response.sendStatus(204);
   },
 });
