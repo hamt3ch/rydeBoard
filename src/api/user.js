@@ -1,8 +1,8 @@
 import resource from 'resource-router-middleware';
-import User from '../models';
-import Util from '../lib';
+import { User } from '../models';
+import { Util } from '../lib';
 
-export default ({ config, db }) => resource({
+export default ({ config, db }) => resource({  // eslint-disable-line
 
   /** Property name to store preloaded entity on `request`. */
   id: 'user',

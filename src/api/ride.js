@@ -1,9 +1,8 @@
 import moment from 'moment';
 import resource from 'resource-router-middleware';
 import { geocoder } from '../service';
-import Ride from '../models';
-import Util from '../lib';
-
+import { Ride } from '../models';
+import { Util } from '../lib';
 /**
  * Helper methods
  */
@@ -53,7 +52,7 @@ const configureBody = (body, data) => {
 /**
  * HTTP requests
  */
-export default ({ config, db }) => resource({
+export default ({ config, db }) => resource({  // eslint-disable-line
 
 // Property name to store preloaded entity on `request`.
   id: 'ride',
@@ -74,6 +73,7 @@ export default ({ config, db }) => resource({
 
   /** GET / - List all entities */
   index({ params }, response) {
+    // var Ride =  db.model('Ride', model)
     Ride.where('createdBy')
       .exec((err, rides) => {
         if (err) return Util.handleError(err);
