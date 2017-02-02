@@ -2,13 +2,18 @@ import http from 'http';
 import express from 'express';
 import cors from 'cors';
 import bodyParser from 'body-parser';
+import morgan from 'morgan';
 import initializeDb from './db';
 import middleware from './middleware';
 import api from './api';
 import config from './config.json';
 
+
 const app = express();
 app.server = http.createServer(app);
+
+// Logger for HTTP Request
+app.use(morgan('combined'));
 
 // 3rd party middleware
 app.use(cors({
