@@ -1,16 +1,24 @@
+export default class Util {
+  // TODO: fill out error handling for all requests
+  static handleError(err) {
+    console.log('the error: ' + err);
+  }
 
-/** Creates a callback that proxies node callback style arguments to an Express Response object.
-* @param {express.Response} res Express HTTP Response
-* @param {number} [status=200] Status code to send on success
-*
-* @example
-* list(req, res) {
-* collection.find({}, toRes(res));
-*}
-*/
+  static allFieldsValid(body) {
+    let count = 0;
+    /* eslint no-restricted-syntax: 0 */
+    for (const field in body) {
+      // check if any fields are empty
+      if (body[field] === '') {
+        return false;
+      }
+      count += 1;
+    }
 
-export default function toRes(res, status = 200) {
-  return (err, thing) => {
-    res.status(status).json(thing);
-  };
+    if (count !== 5) {
+      return false;
+    }
+
+    return true;
+  }
 }
