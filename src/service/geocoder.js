@@ -1,6 +1,7 @@
-import node_geocoder from 'node-geocoder';
-var geo_options = {
+import nodeGeocoder from 'node-geocoder';
+
+const geoOptions = {
   provider: 'google',
 };
 
-export default node_geocoder(geo_options);
+export default nodeGeocoder(geoOptions);

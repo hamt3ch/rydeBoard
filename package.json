@@ -8,7 +8,7 @@
     "build": "babel src -s -D -d dist --presets es2015,stage-0",
     "start": "node dist",
     "prestart": "npm run -s build",
-    "test": "eslint src",
+    "lint": "eslint src",
     "deploy": "now --docker"
   },
   "eslintConfig": {
@@ -40,6 +40,7 @@
     "express": "^4.13.3",
     "moment": "^2.17.1",
     "mongoose": "^4.7.7",
+    "morgan": "^1.7.0",
     "node-geocoder": "^3.15.2",
     "resource-router-middleware": "^0.5.1"
   },
