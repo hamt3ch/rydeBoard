@@ -6,7 +6,6 @@ export default (callback) => {
     if (err) return console.log(err);
     return console.log('Connected successfully to server w/ mongoose');
   });
-  
+
   callback(mongoose);
 };
-
