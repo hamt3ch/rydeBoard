@@ -1,14 +1,15 @@
+/* eslint import/no-extraneous-dependencies: 0 */
 import test from 'ava';
+import request from 'supertest';
 import 'babel-register';
 
 import server from '../../src';
 
-test('foo', t => {
-    t.pass();
-});
+test('GET /Rides :Success', async t => {
+  t.plan(1); // 1 assertion
 
-test('bar', async t => {
-    const bar = Promise.resolve('bar');
+  const res = await request(server)
+              .get('/api/rides');
 
-    t.is(await bar, 'bar');
+  t.is(res.status, 200);
 });
