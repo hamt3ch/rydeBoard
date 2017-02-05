@@ -32,6 +32,8 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
+    "babel-polyfill": "^6.22.0",
+    "babel-register": "^6.22.0",
     "body-parser": "^1.13.3",
     "compression": "^1.5.2",
     "cors": "^2.7.1",
@@ -43,6 +45,7 @@
     "resource-router-middleware": "^0.5.1"
   },
   "devDependencies": {
+    "ava": "^0.18.0",
     "babel-cli": "^6.9.0",
     "babel-core": "^6.9.0",
     "babel-preset-es2015": "^6.9.0",
@@ -52,6 +55,7 @@
     "eslint-plugin-import": "^2.2.0",
     "eslint-plugin-jsx-a11y": "^3.0.2",
     "eslint-plugin-react": "^6.9.0",
-    "nodemon": "^1.9.2"
+    "nodemon": "^1.9.2",
+    "supertest": "^3.0.0"
   }
 }
