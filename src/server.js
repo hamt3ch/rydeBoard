@@ -8,14 +8,17 @@ import middleware from './middleware';
 import api from './api';
 import config from './config.json';
 
-
+// new instance of express
 const app = express();
 app.server = http.createServer(app);
+
+/**
+ * 3rd party middleware
+ */
 
 // Logger for HTTP Request
 app.use(morgan('combined'));
 
-// 3rd party middleware
 app.use(cors({
   exposedHeaders: config.corsHeaders,
 }));
