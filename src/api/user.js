@@ -20,16 +20,15 @@ export default ({ config, db }) => resource({  // eslint-disable-line
     });
   },
 
-  /** GET / - List all entities */
+  /** GET / - List all users */
   index({ params }, response) {
-    User.where('createdBy')
-      .exec((err, users) => {
-        if (err) return Util.handleError(err);
-        return response.json(users);
-      });
+    User.where('createdBy').exec((err, users) => {
+      if (err) return Util.handleError(err);
+      return response.json(users);
+    });
   },
 
-  /** POST / - Create a new entity */
+  /** POST / - Create new user */
   create({ body }, response) {
     if (Util.allFieldsValid(body)) {
       const userToSave = new User(body);
@@ -43,12 +42,12 @@ export default ({ config, db }) => resource({  // eslint-disable-line
     }
   },
 
-  /** GET /:id - Return a given entity */
+  /** GET /:id - Return user */
   read({ user }, response) {
     response.json(user);
   },
 
-  /** PUT /:id - Update a given entity */
+  /** PUT /:id - Update user */
   update({ user, body }, response) {
     const tempUser = user;
     /* eslint no-restricted-syntax: 0 */

@@ -71,17 +71,16 @@ export default ({ config, db }) => resource({  // eslint-disable-line
     });
   },
 
-  /** GET / - List all entities */
+  /** GET / - List all rides */
   index({ params }, response) {
     // var Ride =  db.model('Ride', model)
-    Ride.where('createdBy')
-      .exec((err, rides) => {
-        if (err) return Util.handleError(err);
-        return response.json(rides);
-      });
+    Ride.where('createdBy').exec((err, rides) => {
+      if (err) return Util.handleError(err);
+      return response.json(rides);
+    });
   },
 
-  /** POST / - Create a new entity */
+  /** POST / - Create new ride */
   create({ body }, response) {
     if (validateRideObject(body)) {
       configureBody(body, (data) => {
@@ -97,12 +96,12 @@ export default ({ config, db }) => resource({  // eslint-disable-line
     }
   },
 
-  /** GET /:id - Return a given entity */
+  /** GET /:id - Return ride based on id */
   read({ ride }, response) {
     response.json(ride);
   },
 
-  /** PUT /:id - Update a given entity */
+  /** PUT /:id - Update ride */
   update({ ride, body }, response) {
     response.sendStatus(204);
   },
