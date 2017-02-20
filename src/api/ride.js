@@ -1,8 +1,9 @@
 import moment from 'moment';
 import resource from 'resource-router-middleware';
-import { geocoder } from '../service';
+import geocoder from '../service';
+import Util from '../lib';
 import { Ride } from '../models';
-import { Util } from '../lib';
+
 /**
  * Helper methods
  */

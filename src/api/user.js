@@ -1,6 +1,6 @@
 import resource from 'resource-router-middleware';
 import { User } from '../models';
-import { Util } from '../lib';
+import Util from '../lib';
 
 export default ({ config, db }) => resource({  // eslint-disable-line
 
