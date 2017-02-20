@@ -1,5 +1,8 @@
 {
 	"port": 8080,
 	"bodyLimit": "100kb",
-	"corsHeaders": ["Link"]
+	"corsHeaders": ["Link"],
+	"db": {
+		"url":"mongodb://admin:hacks@ds019946.mlab.com:19946/ryde-board"
+	}
 }
