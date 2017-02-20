@@ -10,7 +10,7 @@
     "prestart": "npm run -s build",
     "lint": "eslint src",
     "deploy": "now --docker",
-    "test": "npm run lint && PORT=8080 npm run dev"
+    "test": "npm run lint && ava"
   },
   "eslintConfig": {
     "extends": "eslint:recommended",
