@@ -1,7 +1,7 @@
 export default class Util {
   // TODO: fill out error handling for all requests
   static handleError(err) {
-    console.log('error: ' + err);
+    console.log(err);
   }
 
   static allFieldsValid(body) {
