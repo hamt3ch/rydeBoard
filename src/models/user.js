@@ -1,11 +1,11 @@
 import mongoose from 'mongoose';
 
 const user = new mongoose.Schema({
-  firstName: String,
-  lastName: String,
+  first_name: String,
+  last_name: String,
   email: String,
-  currentLocation: String,
-  trips: [], // array of rideIDs
+  password: String,
+  trips: [],
 });
 
 export default mongoose.model('User', user);

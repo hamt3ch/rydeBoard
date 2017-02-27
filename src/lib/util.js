@@ -15,10 +15,7 @@ export default class Util {
       count += 1;
     }
 
-    if (count !== 5) {
-      return false;
-    }
-
+    if (count < 4) return false;
     return true;
   }
 }

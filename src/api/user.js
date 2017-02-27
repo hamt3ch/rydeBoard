@@ -38,7 +38,7 @@ export default ({ config, db }) => resource({  // eslint-disable-line
         return true;
       });
     } else {
-      response.json({ error: 'misformatted body' });
+      response.json({ error: response.statusText });
     }
   },
 

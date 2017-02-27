@@ -8,7 +8,11 @@ import { Ride } from '../models';
  * Helper methods
  */
 const validateRideObject = (body) => {
-  if (!Util.allFieldsValid(body) || !moment(body.departure_time, 'MM-DD-YYYY h:mm a').isValid()) {
+  if (!Util.allFieldsValid(body)) {
+    console.log('A field is blank.');
+  }
+  if (!moment(body.departure_time, 'MM-DD-YYYY h:mm a').isValid()) {
+    console.log('Departure time is invalid.');
     return false;
   }
   return true;
@@ -93,7 +97,10 @@ export default ({ config, db }) => resource({  // eslint-disable-line
         response.json(rideToSave); // Send back ride.json for confirmation
       });
     } else {
-      response.json({ error: 'misformatted body' });
+      console.log(response);
+      response.json({
+        response: 'invalid ride object',
+      });
     }
   },
 
