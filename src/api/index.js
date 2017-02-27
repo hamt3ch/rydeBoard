@@ -7,7 +7,7 @@ export default ({ config, db }) => {
   const api = Router();
 
   api.use('/rides', ride({ config, db }));
-  api.use('/user', user({ config, db }));
+  api.use('/users', user({ config, db }));
 
   // perhaps expose some API metadata at the root
   api.get('/', (request, response) => {
