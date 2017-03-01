@@ -7,12 +7,10 @@ import { Ride } from '../models';
 /**
  * Helper methods
  */
-const validateRideObject = (body) => {
-  if (!Util.allFieldsValid(body) || !moment(body.departure_time, 'MM-DD-YYYY h:mm a').isValid()) {
-    return false;
-  }
-  return true;
-};
+
+const noEmptyFields = body => Util.allFieldsValid(body);
+
+const timeIsValid = body => moment(body.departure_time, 'MM-DD-YYYY h:mm a').isValid();
 
 const convertAddress = (address, callback) => {
   geocoder.batchGeocode(address)
@@ -83,7 +81,15 @@ export default ({ config, db }) => resource({  // eslint-disable-line
 
   /** POST / - Create new ride */
   create({ body }, response) {
-    if (validateRideObject(body)) {
+    if (!noEmptyFields(body)) {
+      response.json({
+        response: 'A field is empty.',
+      });
+    } else if (!timeIsValid(body)) {
+      response.json({
+        response: 'Please format time correctly.',
+      });
+    } else {
       configureBody(body, (data) => {
         const rideToSave = new Ride(data);
         rideToSave.save((err) => { // problem saving data to db
@@ -92,8 +98,6 @@ export default ({ config, db }) => resource({  // eslint-disable-line
         });
         response.json(rideToSave); // Send back ride.json for confirmation
       });
-    } else {
-      response.json({ error: 'misformatted body' });
     }
   },
 
