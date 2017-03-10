@@ -5,24 +5,36 @@ import 'babel-register';
 
 import server from '../../src';
 
-test('GET /rides :Success - ping endpoint', async (t) => {
+test('GET /rides :Success: - ping endpoint', async (t) => {
   const res = await request(server)
               .get('/api/rides');
 
   t.is(res.status, 200);
 });
 
-test('POST /rides :Success - creating a new ride', async (t) => {
-  // const res = await request(server)
-  //                   .post('/api/rides')
-  //                   .send({ foo: 'bar' });
-  //
-  // console.log(res.body);
-  // t.is(res.body.response, 'A field is empty.');
-  t.pass();
+test('POST /rides :Success: - creating a new ride', async (t) => {
+  const res = await request(server)
+                    .post('/api/rides')
+                    .send({
+                      departure_location: 'Iceland',
+                      arrival_location: 'London, United Kingdom',
+                      departure_time: '12-06-2017 3:30am',
+                      seats_available: 6,
+                      created_by: 'testId',
+                    });
+  t.is(res.body.arrival_location, 'London, United Kingdom');
+  t.is(res.body.departure_location, 'Iceland');
+  // t.is(res.body.departure_time, '2017-12-06T15:30:00.000Z'); getting which is causing error "2017-12-06T11:30:00.000Z"
+  t.is(res.body.seats_available, 6);
+  t.is(res.body.arrival_longitude, -0.1277583);
+  t.is(res.body.arrival_latitude, 51.5073509);
+  t.is(res.body.departure_longitude, -19.020835);
+  t.is(res.body.departure_latitude, 64.963051);
+  t.is(res.body.created_by, 'testId');
+  t.is(res.status, 200);
 });
 
-test('POST /rides :Fail - invalid fields', async (t) => {
+test('POST /rides :Fail: - invalid fields', async (t) => {
   const res = await request(server)
                     .post('/api/rides')
                     .send({ foo: 'bar' });
