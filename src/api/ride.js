@@ -82,10 +82,12 @@ export default ({ config, db }) => resource({  // eslint-disable-line
   /** POST / - Create new ride */
   create({ body }, response) {
     if (!noEmptyFields(body)) {
+      response.status(400);
       response.json({
         response: 'A field is empty.',
       });
     } else if (!timeIsValid(body)) {
+      response.status(400);
       response.json({
         response: 'Please format time correctly.',
       });
