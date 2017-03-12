@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import ride from './ride';
 import user from './user';
-import passenger from './passenger'
+import passenger from './passenger';
 import { version } from '../../package.json';
 
 export default ({ config, db }) => {
