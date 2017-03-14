@@ -9,7 +9,8 @@ const ride = new mongoose.Schema({
   arrival_longitude: Number, // geocoded by address (googleMaps Api)
   arrival_latitude: Number,
   seats_available: Number,
-  // passengers: [User], //list of userIds
+  passengers: [mongoose.Schema.Types.ObjectId], // list of userIds
+  stand_by_passengers: [mongoose.Schema.Types.ObjectId], // list of userIds
   created_by: String,
   // created_by: {type: mongoose.Schema.Types.ObjectId, ref: 'User'},
   // oneWay: Ride // if undefined >> oneWay Trip
