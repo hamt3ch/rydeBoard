@@ -17,7 +17,7 @@ app.server = http.createServer(app);
  */
 
 // Logger for HTTP Request
-app.use(morgan('combined'));
+app.use(morgan('dev'));
 
 app.use(cors({
   exposedHeaders: config.corsHeaders,
