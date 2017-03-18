@@ -6,6 +6,9 @@ LABEL authors=""
 # Update & install required packages
 RUN apk add --update nodejs bash git
 
+# Install yarn
+RUN npm install yarn -g
+
 # Install app dependencies
 COPY package.json /www/package.json
 RUN cd /www; npm install
@@ -23,4 +26,4 @@ ENV PORT 8080
 EXPOSE  8080
 
 # start command as per package.json
-CMD ["npm", "start"]
+CMD ["yarn", "start"]
