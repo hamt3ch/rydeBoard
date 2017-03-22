@@ -115,6 +115,21 @@ export default ({ config, db }) => resource({  // eslint-disable-line
 
   /** DELETE /:id - Delete a given entity */
   delete({ ride }, response) {
-    response.sendStatus(204);
+    if (ride === null) {
+      response.sendStatus(404);
+    }
+
+    Ride.remove({ _id: ride._id }, (err, ride) => { // eslint-disable-line
+      if (err) {
+        response.status(400);
+        response.json({
+          response: 'error deleting ride',
+        });
+        return Util.handleError(err);
+      }
+    });
+    response.json({
+      delete: ride._id, // eslint-disable-line
+    });
   },
 });

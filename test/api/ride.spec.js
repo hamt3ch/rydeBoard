@@ -56,13 +56,34 @@ test('POST /rides :Fail - invalid time', async (t) => {
   t.is(res.status, 400);
 });
 
-// TODO: Finsh writing these test
-/*
-
 test('DELETE /rides :Success - deleting a ride', async (t) => {
-  t.pass();
+  const createRes = await request(server)
+                    .post('/api/rides')
+                    .send({
+                      departure_location: 'Iceland',
+                      arrival_location: 'London, United Kingdom',
+                      departure_time: '12-06-2017 3:30am',
+                      seats_available: 6,
+                      created_by: 'testId',
+                    });
+
+  let idToDelete = createRes.body._id; // eslint-disable-line
+  const res = await request(server)
+                    .delete(`/api/rides/${idToDelete}`);
+  t.is(res.body.delete, `${idToDelete}`);
+  t.is(res.status, 200);
 });
 
+test('DELETE /rides :Success - deleting ride that doesnt exist', async (t) => {
+  const idToDelete = 'someId'; // id thats isnt in the db
+  const res = await request(server)
+                    .delete(`/api/rides/${idToDelete}`);
+  t.is(res.status, 404);
+});
+
+
+// TODO: Finsh writing these test
+/*
 test('GET /rides/:id :Success - getting a ride w/ certain id', async (t) => {
   t.pass();
 });
