@@ -34,7 +34,7 @@ const convertAddress = (address, callback) => {
 const configureBody = (body, data) => {
   // Transform date.string to actual date type
   const dateString = body.departure_time;
-  const convert = moment(dateString, 'MM-DD-YYYY h:mm a');
+  const convert = moment(dateString + ' +0000', 'MM-DD-YYYY h:mm a Z');
   const response = body;
   response.departure_time = convert;
 
