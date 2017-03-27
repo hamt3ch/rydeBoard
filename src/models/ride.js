@@ -1,18 +1,20 @@
 import mongoose from 'mongoose';
 
 const ride = new mongoose.Schema({
-  departure_location: String,
-  departure_longitude: Number, // geocoded by address (googleMaps Api)
-  departure_latitude: Number,
-  departure_time: Date,
   arrival_location: String,
-  arrival_longitude: Number, // geocoded by address (googleMaps Api)
-  arrival_latitude: Number,
+  coordinates: {
+    arrival_latitude: Number,
+    arrival_longitude: Number,
+    departure_latitude: Number,
+    departure_longitude: Number,
+  },
+  date_posted: { type: Date, default: Date.now },
+  departure_location: String,
+  departure_time: Date,
+  passengers: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
+  posted_by: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
   seats_available: Number,
-  passengers: [mongoose.Schema.Types.ObjectId], // list of userIds
-  stand_by_passengers: [mongoose.Schema.Types.ObjectId], // list of userIds
-  created_by: String,
-  // created_by: {type: mongoose.Schema.Types.ObjectId, ref: 'User'},
+  stand_by_passengers: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
   // oneWay: Ride // if undefined >> oneWay Trip
   // else >> return Ride.Id of return trip
 });

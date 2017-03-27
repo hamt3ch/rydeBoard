@@ -35,6 +35,7 @@
   "dependencies": {
     "babel-polyfill": "^6.22.0",
     "babel-register": "^6.22.0",
+    "bcrypt": "^1.0.2",
     "body-parser": "^1.13.3",
     "compression": "^1.5.2",
     "cors": "^2.7.1",
@@ -59,5 +60,5 @@
     "nodemon": "^1.9.2",
     "supertest": "^3.0.0"
   },
-  "alias":"uryde-dev"
+  "alias": "uryde-dev"
 }
