@@ -1,15 +1,13 @@
 import mongoose from 'mongoose';
 
 const ride = new mongoose.Schema({
+  arrival_latitude: Number,
   arrival_location: String,
-  coordinates: {
-    arrival_latitude: Number,
-    arrival_longitude: Number,
-    departure_latitude: Number,
-    departure_longitude: Number,
-  },
+  arrival_longitude: Number,
   date_posted: { type: Date, default: Date.now },
+  departure_latitude: Number,
   departure_location: String,
+  departure_longitude: Number,
   departure_time: Date,
   passengers: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
   posted_by: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
