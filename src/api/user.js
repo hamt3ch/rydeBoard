@@ -1,5 +1,4 @@
 import resource from 'resource-router-middleware';
-import bcrypt from 'bcrypt';
 import { User } from '../models';
 import Util from '../lib';
 
@@ -33,12 +32,14 @@ export default ({ config, db }) => resource({  // eslint-disable-line
   create({ body }, response) {
     if (Util.allFieldsValid(body)) {
       const userToSave = new User(body);
-      const salt = bcrypt.genSaltSync(10);
-      userToSave.password = bcrypt.hashSync(userToSave.password, salt);
-      userToSave.save((err) => {
-        if (err) return Util.handleError(err);
-        response.json(userToSave);
-        return true;
+      userToSave.hashPassword(userToSave.password, (error, hashedPassword) => {
+        if (error) Util.handleError(error);
+        userToSave.password = hashedPassword;
+        userToSave.save((err) => {
+          if (err) return Util.handleError(err);
+          response.json(userToSave);
+          return true;
+        });
       });
     } else {
       response.status(400);
