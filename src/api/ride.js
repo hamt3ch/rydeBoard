@@ -73,7 +73,7 @@ export default ({ config, db }) => resource({  // eslint-disable-line
   /** GET / - List all rides */
   index({ params }, response) {
     // var Ride =  db.model('Ride', model)
-    Ride.where('createdBy').exec((err, rides) => {
+    Ride.find().sort('-date_posted').exec((err, rides) => {
       if (err) return Util.handleError(err);
       return response.json(rides);
     });
@@ -84,12 +84,12 @@ export default ({ config, db }) => resource({  // eslint-disable-line
     if (!noEmptyFields(body)) {
       response.status(400);
       response.json({
-        response: 'A field is empty.',
+        error: 'One or more field is empty.',
       });
     } else if (!timeIsValid(body)) {
       response.status(400);
       response.json({
-        response: 'Please format time correctly.',
+        error: 'Please format time correctly.',
       });
     } else {
       configureBody(body, (data) => {

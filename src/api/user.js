@@ -22,7 +22,7 @@ export default ({ config, db }) => resource({  // eslint-disable-line
 
   /** GET / - List all users */
   index({ params }, response) {
-    User.where('createdBy').exec((err, users) => {
+    User.find().sort('-date_created').exec((err, users) => {
       if (err) return Util.handleError(err);
       return response.json(users);
     });
@@ -32,13 +32,18 @@ export default ({ config, db }) => resource({  // eslint-disable-line
   create({ body }, response) {
     if (Util.allFieldsValid(body)) {
       const userToSave = new User(body);
-      userToSave.save((err) => {
-        if (err) return Util.handleError(err);
-        response.json(userToSave);
-        return true;
+      userToSave.hashPassword(userToSave.password, (error, hashedPassword) => {
+        if (error) Util.handleError(error);
+        userToSave.password = hashedPassword;
+        userToSave.save((err) => {
+          if (err) return Util.handleError(err);
+          response.json(userToSave);
+          return true;
+        });
       });
     } else {
-      response.json({ error: response.statusText });
+      response.status(400);
+      response.json({ error: 'One or more fields are missing.' });
     }
   },
 

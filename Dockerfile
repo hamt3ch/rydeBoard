@@ -11,7 +11,7 @@ RUN npm install yarn -g
 
 # Install app dependencies
 COPY package.json /www/package.json
-RUN cd /www; npm install
+RUN cd /www; yarn install
 
 # Copy app source
 COPY . /www
