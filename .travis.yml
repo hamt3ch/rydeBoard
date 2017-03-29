@@ -9,8 +9,3 @@ addons:
     packages:
     - gcc-4.8
     - g++-4.8
-services:
-  - mysql
-  - redis
-env:
-  - TRAVIS=travis CXX=g++-4.8
