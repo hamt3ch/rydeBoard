@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import bcrypt from 'bcrypt';
+import bcrypt from 'bcrypt-nodejs';
 
 const user = new mongoose.Schema({
   date_created: { type: Date, default: Date.now },
