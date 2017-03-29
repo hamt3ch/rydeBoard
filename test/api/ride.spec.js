@@ -20,7 +20,7 @@ test('POST /rides :Success: - creating a new ride', async (t) => {
                       arrival_location: 'London, United Kingdom',
                       departure_time: '12-06-2017 3:30am',
                       seats_available: 6,
-                      created_by: 'testId',
+                      created_by: '58db64d8faff18761da07736',
                     });
   t.is(res.body.arrival_location, 'London, United Kingdom');
   t.is(res.body.departure_location, 'Iceland');
@@ -30,16 +30,8 @@ test('POST /rides :Success: - creating a new ride', async (t) => {
   t.is(res.body.arrival_latitude, 51.5073509);
   t.is(res.body.departure_longitude, -19.020835);
   t.is(res.body.departure_latitude, 64.963051);
-  t.is(res.body.created_by, 'testId');
+  t.is(res.body.created_by, '58db64d8faff18761da07736');
   t.is(res.status, 200);
-});
-
-test('POST /rides :Fail: - invalid fields', async (t) => {
-  const res = await request(server)
-                    .post('/api/rides')
-                    .send({ foo: 'bar' });
-  t.is(res.body.response, 'A field is empty.');
-  t.is(res.status, 400);
 });
 
 test('POST /rides :Fail - invalid time', async (t) => {
@@ -50,9 +42,17 @@ test('POST /rides :Fail - invalid time', async (t) => {
                       arrival_location: 'London, United Kingdom',
                       departure_time: '1999-12-31T23:23:00.000Z',
                       seats_available: 6,
-                      created_by: 'Hugh',
+                      created_by: 'testId',
                     });
-  t.is(res.body.response, 'Please format time correctly.');
+  t.is(res.body.error, 'Please format time correctly.');
+  t.is(res.status, 400);
+});
+
+test('POST /rides :Fail: - invalid fields', async (t) => {
+  const res = await request(server)
+                    .post('/api/rides')
+                    .send({ foo: 'bar' });
+  t.is(res.body.error, 'One or more field is empty.');
   t.is(res.status, 400);
 });
 
@@ -64,7 +64,7 @@ test('DELETE /rides :Success - deleting a ride', async (t) => {
                       arrival_location: 'London, United Kingdom',
                       departure_time: '12-06-2017 3:30am',
                       seats_available: 6,
-                      created_by: 'testId',
+                      created_by: '58db64d8faff18761da07736',
                     });
 
   let idToDelete = createRes.body._id; // eslint-disable-line

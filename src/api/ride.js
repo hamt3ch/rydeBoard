@@ -84,7 +84,7 @@ export default ({ config, db }) => resource({  // eslint-disable-line
     if (!noEmptyFields(body)) {
       response.status(400);
       response.json({
-        response: 'One or more field is empty.',
+        error: 'One or more field is empty.',
       });
     } else if (!timeIsValid(body)) {
       response.status(400);
