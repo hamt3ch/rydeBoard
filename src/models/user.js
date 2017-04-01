@@ -11,8 +11,7 @@ const user = new mongoose.Schema({
 });
 
 user.methods.hashPassword = (password, callback) => {
-  const saltRounds = 10;
-  bcrypt.hash(password, saltRounds, (err, hash) => {
+  bcrypt.hash(password, bcrypt.genSaltSync(), null, (err, hash) => {
     // Store hash in your password DB.
     if (err) return callback(err, null);
     return callback(null, hash);
