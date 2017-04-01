@@ -24,7 +24,7 @@ test('POST /rides :Success: - creating a new ride', async (t) => {
                     });
   t.is(res.body.arrival_location, 'London, United Kingdom');
   t.is(res.body.departure_location, 'Iceland');
-  // t.is(res.body.departure_time, '2017-12-06T15:30:00.000Z'); getting which is causing error "2017-12-06T11:30:00.000Z"
+  t.is(res.body.departure_time, '2017-12-06T03:30:00.000Z');
   t.is(res.body.seats_available, 6);
   t.is(res.body.arrival_longitude, -0.1277583);
   t.is(res.body.arrival_latitude, 51.5073509);
