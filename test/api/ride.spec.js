@@ -81,6 +81,39 @@ test('DELETE /rides :Success - deleting ride that doesnt exist', async (t) => {
   t.is(res.status, 404);
 });
 
+// USERS
+
+test('GET /users :Success: - ping endpoint', async (t) => {
+  const res = await request(server)
+              .get('/api/users');
+
+  t.is(res.status, 200);
+});
+
+test('POST /users :Success: - create new user', async (t) => {
+  const res = await request(server)
+              .post('/api/users')
+              .send({
+                first_name: 'Test',
+                last_name: 'Tester',
+                email: 'test@test.com',
+                password: 'test'
+              });
+  t.is(res.body.last_name, 'Tester');
+  t.is(res.body.email, 'test@test.com');
+  t.is(res.status, 200);
+});
+
+test('POST /users :Fail: - missing password', async (t) => {
+  const res = await request(server)
+              .post('/api/users')
+              .send({
+                first_name: 'Test',
+                last_name: 'Tester',
+                email: 'test@test.com',
+              });
+  t.is(res.status, 400);
+});
 
 // TODO: Finsh writing these test
 /*
