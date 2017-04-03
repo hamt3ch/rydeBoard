@@ -3,6 +3,8 @@ import resource from 'resource-router-middleware';
 import Util from '../lib';
 import { Ride } from '../models';
 
+mongoose.Promise = global.Promise;
+
 /**
  * Helper methods
  */

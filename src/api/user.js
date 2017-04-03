@@ -31,15 +31,22 @@ export default ({ config, db }) => resource({  // eslint-disable-line
   /** POST / - Create new user */
   create({ body }, response) {
     if (Util.allFieldsValid(body)) {
-      const userToSave = new User(body);
-      userToSave.hashPassword(userToSave.password, (error, hashedPassword) => {
-        if (error) Util.handleError(error);
-        userToSave.password = hashedPassword;
-        userToSave.save((err) => {
-          if (err) return Util.handleError(err);
-          response.json(userToSave);
-          return true;
-        });
+      User.findOne({ email: body.email }, (err, user) => {
+        if (user) {
+          response.status(400);
+          response.json({ error: 'A user associated with this email already exists. Please use another email.' });
+        } else {
+          const userToSave = new User(body);
+          userToSave.hashPassword(userToSave.password, (error, hashedPassword) => {
+            if (error) Util.handleError(error);
+            userToSave.password = hashedPassword;
+            userToSave.save((saveError) => {
+              if (saveError) return Util.handleError(saveError);
+              response.json(userToSave);
+              return true;
+            });
+          });
+        }
       });
     } else {
       response.status(400);
@@ -66,7 +73,21 @@ export default ({ config, db }) => resource({  // eslint-disable-line
 
   /** DELETE /:id - Delete a given entity */
   delete({ user }, response) {
-    user.splice(user.indexOf(user), 1);
-    response.sendStatus(204);
+    if (user === null) {
+      response.sendStatus(404);
+    }
+
+    User.remove({ _id: user._id }, (err, user) => { // eslint-disable-line
+      if (err) {
+        response.status(400);
+        response.json({
+          response: 'error deleting user',
+        });
+        return Util.handleError(err);
+      }
+    });
+    response.json({
+      delete: user._id, // eslint-disable-line
+    });
   },
 });

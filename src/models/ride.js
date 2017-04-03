@@ -1,5 +1,7 @@
 import mongoose from 'mongoose';
 
+mongoose.Promise = global.Promise;
+
 const ride = new mongoose.Schema({
   arrival_latitude: Number,
   arrival_location: String,

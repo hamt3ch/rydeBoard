@@ -10,7 +10,7 @@
     "prestart": "npm run -s build",
     "lint": "eslint src",
     "deploy": "now --docker && now alias",
-    "test": "npm run lint && ava"
+    "test": "npm run lint && ava --verbose"
   },
   "eslintConfig": {
     "extends": "eslint:recommended",
