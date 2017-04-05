@@ -5,26 +5,26 @@ import 'babel-register';
 
 import server from '../../src';
 
-test('GET /rides :Success: - ping endpoint', async (t) => {
+test('GET /rides :Success - ping endpoint', async (t) => {
   const res = await request(server)
               .get('/api/rides');
 
   t.is(res.status, 200);
 });
 
-test('POST /rides :Success: - creating a new ride', async (t) => {
+test('POST /rides :Success - post new ride', async (t) => {
   const res = await request(server)
                     .post('/api/rides')
                     .send({
                       departure_location: 'Iceland',
                       arrival_location: 'London, United Kingdom',
-                      departure_time: '12-06-2017 3:30am',
+                      departure_time: '12-06-2017 3:30 am',
                       seats_available: 6,
                       created_by: '58db64d8faff18761da07736',
                     });
   t.is(res.body.arrival_location, 'London, United Kingdom');
   t.is(res.body.departure_location, 'Iceland');
-  // t.is(res.body.departure_time, '2017-12-06T15:30:00.000Z'); getting which is causing error "2017-12-06T11:30:00.000Z"
+  t.is(res.body.departure_time, '12-06-2017 3:30 am');
   t.is(res.body.seats_available, 6);
   t.is(res.body.arrival_longitude, -0.1277583);
   t.is(res.body.arrival_latitude, 51.5073509);
@@ -32,23 +32,11 @@ test('POST /rides :Success: - creating a new ride', async (t) => {
   t.is(res.body.departure_latitude, 64.963051);
   t.is(res.body.created_by, '58db64d8faff18761da07736');
   t.is(res.status, 200);
+  let idToDelete = res.body._id; // eslint-disable-line
+  await request(server).delete(`/api/rides/${idToDelete}`);
 });
 
-test('POST /rides :Fail - invalid time', async (t) => {
-  const res = await request(server)
-                    .post('/api/rides')
-                    .send({
-                      departure_location: 'Iceland',
-                      arrival_location: 'London, United Kingdom',
-                      departure_time: '1999-12-31T23:23:00.000Z',
-                      seats_available: 6,
-                      created_by: 'testId',
-                    });
-  t.is(res.body.error, 'Please format time correctly.');
-  t.is(res.status, 400);
-});
-
-test('POST /rides :Fail: - invalid fields', async (t) => {
+test('POST /rides :Fail - invalid fields', async (t) => {
   const res = await request(server)
                     .post('/api/rides')
                     .send({ foo: 'bar' });
@@ -56,7 +44,7 @@ test('POST /rides :Fail: - invalid fields', async (t) => {
   t.is(res.status, 400);
 });
 
-test('DELETE /rides :Success - deleting a ride', async (t) => {
+test('DELETE /rides :Success - remove ride', async (t) => {
   const createRes = await request(server)
                     .post('/api/rides')
                     .send({
@@ -74,7 +62,7 @@ test('DELETE /rides :Success - deleting a ride', async (t) => {
   t.is(res.status, 200);
 });
 
-test('DELETE /rides :Success - deleting ride that doesnt exist', async (t) => {
+test('DELETE /rides :Fail - remove non-existent ride', async (t) => {
   const idToDelete = 'someId'; // id thats isnt in the db
   const res = await request(server)
                     .delete(`/api/rides/${idToDelete}`);
@@ -83,28 +71,31 @@ test('DELETE /rides :Success - deleting ride that doesnt exist', async (t) => {
 
 // USERS
 
-test('GET /users :Success: - ping endpoint', async (t) => {
+test('GET /users :Success - ping endpoint', async (t) => {
   const res = await request(server)
               .get('/api/users');
 
   t.is(res.status, 200);
 });
 
-test('POST /users :Success: - create new user', async (t) => {
+test('POST /users :Success - create new user', async (t) => {
   const res = await request(server)
               .post('/api/users')
               .send({
                 first_name: 'Test',
                 last_name: 'Tester',
                 email: 'test@test.com',
-                password: 'test'
+                password: 'test',
               });
   t.is(res.body.last_name, 'Tester');
   t.is(res.body.email, 'test@test.com');
   t.is(res.status, 200);
+  let idToDelete = res.body._id; // eslint-disable-line
+  await request(server).delete(`/api/users/${idToDelete}`);
+  t.is(res.status, 200);
 });
 
-test('POST /users :Fail: - missing password', async (t) => {
+test('POST /users :Fail - missing password', async (t) => {
   const res = await request(server)
               .post('/api/users')
               .send({
@@ -113,6 +104,30 @@ test('POST /users :Fail: - missing password', async (t) => {
                 email: 'test@test.com',
               });
   t.is(res.status, 400);
+});
+
+test('POST /users :Fail - user already exists', async (t) => {
+  const res = await request(server)
+              .post('/api/users')
+              .send({
+                first_name: 'Test',
+                last_name: 'Tester',
+                email: 'test@test.com',
+                password: 'test',
+              });
+  const res2 = await request(server)
+              .post('/api/users')
+              .send({
+                first_name: 'Test',
+                last_name: 'Tester',
+                email: 'test@test.com',
+                password: 'test',
+              });
+  t.is(res2.status, 400);
+  t.is(res2.body.error, 'A user associated with this email already exists. Please use another email.');
+  let idToDelete = res.body._id; // eslint-disable-line
+  await request(server).delete(`/api/users/${idToDelete}`);
+  t.is(res.status, 200);
 });
 
 // TODO: Finsh writing these test

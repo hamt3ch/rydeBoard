@@ -10,7 +10,8 @@
     "prestart": "npm run -s build",
     "lint": "eslint src",
     "deploy": "now --docker && now alias",
-    "test": "npm run lint && ava"
+    "test": "npm run lint && ava",
+    "test-verbose": "npm run lint && ava --verbose"
   },
   "eslintConfig": {
     "extends": "eslint:recommended",
@@ -40,7 +41,6 @@
     "compression": "^1.5.2",
     "cors": "^2.7.1",
     "express": "^4.13.3",
-    "moment": "^2.17.1",
     "mongoose": "^4.7.7",
     "morgan": "^1.7.0",
     "node-geocoder": "^3.15.2",

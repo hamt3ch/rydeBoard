@@ -1,5 +1,7 @@
 import mongoose from 'mongoose';
 
+mongoose.Promise = global.Promise;
+
 const ride = new mongoose.Schema({
   arrival_latitude: Number,
   arrival_location: String,
@@ -9,7 +11,7 @@ const ride = new mongoose.Schema({
   departure_latitude: Number,
   departure_location: String,
   departure_longitude: Number,
-  departure_time: Date,
+  departure_time: String,
   passengers: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
   seats_available: Number,
   stand_by_passengers: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
