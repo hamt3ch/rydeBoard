@@ -1,4 +1,3 @@
-import moment from 'moment';
 import resource from 'resource-router-middleware';
 import geocoder from '../service';
 import Util from '../lib';
@@ -9,8 +8,6 @@ import { Ride } from '../models';
  */
 
 const noEmptyFields = body => Util.allFieldsValid(body);
-
-const timeIsValid = body => moment(body.departure_time, 'MM-DD-YYYY h:mm a').isValid();
 
 const convertAddress = (address, callback) => {
   geocoder.batchGeocode(address)
@@ -32,11 +29,7 @@ const convertAddress = (address, callback) => {
 };
 
 const configureBody = (body, data) => {
-  // Transform date.string to actual date type
-  const dateString = body.departure_time;
-  const convert = moment(dateString, 'MM-DD-YYYY h:mm a');
   const response = body;
-  response.departure_time = convert;
 
   // Get long and lat for arrival and depart address
   convertAddress([response.departure_location, response.arrival_location], (callback) => {
@@ -85,11 +78,6 @@ export default ({ config, db }) => resource({  // eslint-disable-line
       response.status(400);
       response.json({
         error: 'One or more field is empty.',
-      });
-    } else if (!timeIsValid(body)) {
-      response.status(400);
-      response.json({
-        error: 'Please format time correctly.',
       });
     } else {
       configureBody(body, (data) => {
