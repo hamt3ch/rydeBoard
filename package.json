@@ -1,5 +1,5 @@
 {
-  "name": "ryde-board",
+  "name": "rydeboard",
   "version": "0.1.0",
   "description": "",
   "main": "dist",
@@ -9,7 +9,7 @@
     "start": "node dist/bundle.js",
     "prestart": "npm run -s build",
     "lint": "eslint src",
-    "deploy": "now --docker && now alias",
+    "deploy": "now --alias rydeboard-dev --docker",
     "test": "npm run lint && ava",
     "test-verbose": "npm run lint && ava --verbose"
   },
@@ -62,5 +62,5 @@
     "nodemon": "^1.9.2",
     "supertest": "^3.0.0"
   },
-  "alias": "uryde-dev"
+  "alias": "rydeboard-dev"
 }
