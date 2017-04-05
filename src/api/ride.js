@@ -66,8 +66,8 @@ export default ({ config, db }) => resource({  // eslint-disable-line
   /** GET / - List all rides */
   index({ params }, response) {
     // var Ride =  db.model('Ride', model)
-    Ride.find().sort('-date_posted').exec((err, rides) => {
-      if (err) return Util.handleError(err);
+    Ride.find().sort('-date_posted').populate('created_by').exec((err, rides) => {
+      if (err) return Util.handleError(err.code);
       return response.json(rides);
     });
   },
@@ -75,15 +75,14 @@ export default ({ config, db }) => resource({  // eslint-disable-line
   /** POST / - Create new ride */
   create({ body }, response) {
     if (!noEmptyFields(body)) {
-      response.status(400);
-      response.json({
+      response.status(400).send({
         error: 'One or more field is empty.',
       });
     } else {
       configureBody(body, (data) => {
         const rideToSave = new Ride(data);
         rideToSave.save((err) => { // problem saving data to db
-          if (err) return Util.handleError(err);
+          if (err) return Util.handleError(err.code);
           return true;
         });
         response.json(rideToSave); // Send back ride.json for confirmation
@@ -109,9 +108,8 @@ export default ({ config, db }) => resource({  // eslint-disable-line
 
     Ride.remove({ _id: ride._id }, (err, ride) => { // eslint-disable-line
       if (err) {
-        response.status(400);
-        response.json({
-          response: 'error deleting ride',
+        response.status(400).send({
+          error: 'Ride unable to be removed.',
         });
         return Util.handleError(err);
       }

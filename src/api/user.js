@@ -23,7 +23,7 @@ export default ({ config, db }) => resource({  // eslint-disable-line
   /** GET / - List all users */
   index({ params }, response) {
     User.find().sort('-date_created').exec((err, users) => {
-      if (err) return Util.handleError(err);
+      if (err) return Util.handleError(err.code);
       return response.json(users);
     });
   },
@@ -33,24 +33,25 @@ export default ({ config, db }) => resource({  // eslint-disable-line
     if (Util.allFieldsValid(body)) {
       User.findOne({ email: body.email }, (err, user) => {
         if (user) {
-          response.status(400);
-          response.json({ error: 'A user associated with this email already exists. Please use another email.' });
+          response.status(400).send({
+            error: 'A user associated with this email already exists. Please use another email.',
+          });
         } else {
           const userToSave = new User(body);
           userToSave.hashPassword(userToSave.password, (error, hashedPassword) => {
-            if (error) Util.handleError(error);
+            if (error) return Util.handleError(error);
             userToSave.password = hashedPassword;
             userToSave.save((saveError) => {
-              if (saveError) return Util.handleError(saveError);
+              if (saveError) return Util.handleError(saveError.code);
               response.json(userToSave);
               return true;
             });
+            return true;
           });
         }
       });
     } else {
-      response.status(400);
-      response.json({ error: 'One or more fields are missing.' });
+      response.status(400).send({ error: 'One or more fields are missing.' });
     }
   },
 
@@ -79,9 +80,8 @@ export default ({ config, db }) => resource({  // eslint-disable-line
 
     User.remove({ _id: user._id }, (err, user) => { // eslint-disable-line
       if (err) {
-        response.status(400);
-        response.json({
-          response: 'error deleting user',
+        response.status(400).send({
+          error: 'User unable to be removed.',
         });
         return Util.handleError(err);
       }
