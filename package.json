@@ -5,8 +5,8 @@
   "main": "dist",
   "scripts": {
     "dev": "nodemon -w src --exec \"babel-node src/index.js --presets es2015,stage-0\"",
-    "build": "babel src -s -D -d dist --presets es2015,stage-0",
-    "start": "node dist",
+    "build": "webpack",
+    "start": "node dist/bundle.js",
     "prestart": "npm run -s build",
     "lint": "eslint src",
     "deploy": "now --docker && now alias",
@@ -44,7 +44,9 @@
     "mongoose": "^4.7.7",
     "morgan": "^1.7.0",
     "node-geocoder": "^3.15.2",
-    "resource-router-middleware": "^0.5.1"
+    "resource-router-middleware": "^0.5.1",
+    "webpack": "^2.3.2",
+    "webpack-dev-server": "^2.4.2"
   },
   "devDependencies": {
     "ava": "^0.18.0",
