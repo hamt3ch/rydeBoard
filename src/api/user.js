@@ -34,7 +34,7 @@ export default ({ config, db }) => resource({  // eslint-disable-line
       User.findOne({ email: body.email }, (err, user) => {
         if (user) {
           response.status(400).send({
-            error: 'A user associated with this email already exists. Please use another email.'
+            error: 'A user associated with this email already exists. Please use another email.',
           });
         } else {
           const userToSave = new User(body);
@@ -46,6 +46,7 @@ export default ({ config, db }) => resource({  // eslint-disable-line
               response.json(userToSave);
               return true;
             });
+            return true;
           });
         }
       });
