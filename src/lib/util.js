@@ -1,7 +1,11 @@
 export default class Util {
-  // TODO: fill out error handling for all requests
-  static handleError(err) {
-    console.log(err);
+  static handleError(status = 500, response, error) { // error will be a custom string or an object
+    response.status(status);
+    if (typeof error === 'string') {
+      response.send({ message: error });
+    } else {
+      response.send({ message: error.message });
+    }
   }
 
   static allFieldsValid(body) {

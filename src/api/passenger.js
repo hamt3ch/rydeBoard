@@ -15,14 +15,14 @@ const getPassenger = (ride) => { // eslint-disable-line
   };
 };
 
-const updatePassenger = (rideToUpdate) => {
+const updatePassenger = (response, rideToUpdate) => {
   Ride.findById(rideToUpdate._id, (err, ride) => { // eslint-disable-line
     const curRide = ride;
-    if (err) return Util.handleError(err.code);
+    if (err) return Util.handleError(response, err);
     curRide.passengers = rideToUpdate.passengers;
     curRide.stand_by_passengers = rideToUpdate.stand_by_passengers;
     curRide.save((saveErr, updatedRide) => {
-      if (saveErr) Util.handleError(saveErr.code);
+      if (saveErr) Util.handleError(response, saveErr);
       return updatedRide;
     });
   });
@@ -73,7 +73,7 @@ export default ({ config, db }) => resource({  // eslint-disable-line
     } else {
       ride.passengers.push(mongoose.Types.ObjectId(body.user_id));
     }
-    updatePassenger(ride);
+    updatePassenger(response, ride);
     response.json(getPassenger(ride));
   },
 
