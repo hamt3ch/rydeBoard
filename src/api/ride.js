@@ -82,10 +82,13 @@ export default ({ config, db }) => resource({  // eslint-disable-line
       configureBody(body, (data) => {
         const rideToSave = new Ride(data);
         rideToSave.save((err) => { // problem saving data to db
-          if (err) return Util.handleError(err.code);
+          if (err) {
+            response.status(400).send({ error: err.message });
+            return false;
+          }
+          response.json(rideToSave); // Send back ride.json for confirmation
           return true;
         });
-        response.json(rideToSave); // Send back ride.json for confirmation
       });
     }
   },
