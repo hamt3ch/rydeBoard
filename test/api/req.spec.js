@@ -40,7 +40,7 @@ test('POST /rides :Fail - invalid fields', async (t) => {
   const res = await request(server)
                     .post('/api/rides')
                     .send({ foo: 'bar' });
-  t.is(res.body.error, 'One or more field is empty.');
+  t.is(res.body.message, 'One or more field is empty.');
   t.is(res.status, 400);
 });
 
@@ -58,7 +58,7 @@ test('DELETE /rides :Success - remove ride', async (t) => {
   let idToDelete = createRes.body._id; // eslint-disable-line
   const res = await request(server)
                     .delete(`/api/rides/${idToDelete}`);
-  t.is(res.body.delete, `${idToDelete}`);
+  t.is(res.body.message, `Removed ride ${idToDelete}`);
   t.is(res.status, 200);
 });
 
@@ -124,7 +124,7 @@ test('POST /users :Fail - user already exists', async (t) => {
                 password: 'test',
               });
   t.is(res2.status, 400);
-  t.is(res2.body.error, 'A user associated with this email already exists. Please use another email.');
+  t.is(res2.body.message, 'A user associated with this email already exists. Please use another email.');
   let idToDelete = res.body._id; // eslint-disable-line
   await request(server).delete(`/api/users/${idToDelete}`);
   t.is(res.status, 200);

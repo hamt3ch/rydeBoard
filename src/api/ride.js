@@ -7,8 +7,6 @@ import { Ride } from '../models';
  * Helper methods
  */
 
-const noEmptyFields = body => Util.allFieldsValid(body);
-
 const convertAddress = (address, callback) => {
   geocoder.batchGeocode(address)
   .then((response) => {
@@ -24,7 +22,7 @@ const convertAddress = (address, callback) => {
     });
   })
   .catch((err) => {
-    Util.handleError(err);
+    callback(err);
   });
 };
 
@@ -52,11 +50,8 @@ export default ({ config, db }) => resource({  // eslint-disable-line
 // For requests with an `id`, you can auto-load the entity.
 // Errors terminate the request, success sets `req[id] = data`.
 
+  /** GET /:id - Find a ride with the given id */
   load(req, id, callback) {
-    // let facet = facets.find( facet => facet.id===id ),
-    // err = facet ? null : 'Not found';
-    // callback(err, facet);
-    // middleware for id calls
     Ride.findOne({ _id: id }, (err, ride) => {
       if (err) return callback(err, null); // handleError() method should go here based upon message
       return callback(null, ride);
@@ -65,19 +60,19 @@ export default ({ config, db }) => resource({  // eslint-disable-line
 
   /** GET / - List all rides */
   index({ params }, response) {
-    // var Ride =  db.model('Ride', model)
-    Ride.find().sort('-date_posted').populate('created_by').exec((err, rides) => {
-      if (err) return Util.handleError(err.code);
-      return response.json(rides);
-    });
+    Ride.find()
+      .sort('-date_posted')
+      .populate('created_by')
+      .exec((err, rides) => {
+        if (err) return Util.handleError(response, err);
+        return response.json(rides);
+      });
   },
 
   /** POST / - Create new ride */
   create({ body }, response) {
-    if (!noEmptyFields(body)) {
-      response.status(400).send({
-        error: 'One or more field is empty.',
-      });
+    if (!Util.allFieldsValid(body)) {
+      Util.handleError(400, response, 'One or more field is empty.');
     } else {
       configureBody(body, (data) => {
         const rideToSave = new Ride(data);
@@ -105,20 +100,12 @@ export default ({ config, db }) => resource({  // eslint-disable-line
 
   /** DELETE /:id - Delete a given entity */
   delete({ ride }, response) {
-    if (ride === null) {
-      response.sendStatus(404);
-    }
-
-    Ride.remove({ _id: ride._id }, (err, ride) => { // eslint-disable-line
-      if (err) {
-        response.status(400).send({
-          error: 'Ride unable to be removed.',
-        });
-        return Util.handleError(err);
-      }
-    });
-    response.json({
-      delete: ride._id, // eslint-disable-line
+    const _id = ride._id; // eslint-disable-line
+    Ride.remove({ _id }, (err, ride) => { // eslint-disable-line
+      if (err) return Util.handleError(404, response, err);
+      return response.json({
+        message: `Removed ride ${_id}`, // eslint-disable-line
+      });
     });
   },
 });
