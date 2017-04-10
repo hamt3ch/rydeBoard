@@ -64,7 +64,7 @@ export default ({ config, db }) => resource({  // eslint-disable-line
       .sort('-date_posted')
       .populate('created_by')
       .exec((err, rides) => {
-        if (err) return Util.handleError(response, err);
+        if (err) return Util.handleError(500, response, err);
         return response.json(rides);
       });
   },
