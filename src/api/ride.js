@@ -76,8 +76,8 @@ export default ({ config, db }) => resource({  // eslint-disable-line
     } else {
       configureBody(body, (data) => {
         const rideToSave = new Ride(data);
-        rideToSave.save((err) => { // problem saving data to db
-          if (err) return Util.handleError(500, response, err.message);
+        rideToSave.save((err) => {
+          if (err) return Util.handleError(500, response, err.message); // problem saving data to db
           return response.json(rideToSave); // Send back ride.json for confirmation
         });
       });
