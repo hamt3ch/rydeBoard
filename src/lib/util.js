@@ -1,5 +1,5 @@
 export default class Util {
-  static handleError(status = 500, response, error) { // error will be a custom string or an object
+  static handleError(response, error, status = 500) { // error will be a custom string or an object
     response.status(status);
     if (typeof error === 'string') {
       response.send({ message: error });
