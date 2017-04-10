@@ -18,7 +18,7 @@ const getPassenger = (ride) => { // eslint-disable-line
 const updatePassenger = (response, rideToUpdate) => {
   Ride.findById(rideToUpdate._id, (err, ride) => { // eslint-disable-line
     const curRide = ride;
-    if (err) return Util.handleError(500, response, err);
+    if (err) return Util.handleError(response, err);
     curRide.passengers = rideToUpdate.passengers;
     curRide.stand_by_passengers = rideToUpdate.stand_by_passengers;
     curRide.save((saveErr, updatedRide) => {

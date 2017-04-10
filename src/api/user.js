@@ -20,7 +20,7 @@ export default ({ config, db }) => resource({  // eslint-disable-line
   /** GET / - List all users */
   index({ params }, response) {
     User.find().sort('-date_created').exec((err, users) => {
-      if (err) return Util.handleError(500, response, err);
+      if (err) return Util.handleError(response, err);
       return response.json(users);
     });
   },
@@ -30,14 +30,14 @@ export default ({ config, db }) => resource({  // eslint-disable-line
     if (Util.allFieldsValid(body)) {
       User.findOne({ email: body.email }, (err, user) => {
         if (user) {
-          Util.handleError(400, response, 'A user associated with this email already exists. Please use another email.');
+          Util.handleError(response, 'A user associated with this email already exists. Please use another email.', 400);
         } else {
           const userToSave = new User(body);
           userToSave.hashPassword(userToSave.password, (hashError, hashedPassword) => {
-            if (hashError) return Util.handleError(500, response, hashError);
+            if (hashError) return Util.handleError(response, hashError);
             userToSave.password = hashedPassword;
             userToSave.save((saveError) => {
-              if (saveError) return Util.handleError(500, response, saveError);
+              if (saveError) return Util.handleError(response, saveError);
               return response.json(userToSave);
             });
             return true;
@@ -45,7 +45,7 @@ export default ({ config, db }) => resource({  // eslint-disable-line
         }
       });
     } else {
-      Util.handleError(400, response, 'One or more fields are missing.');
+      Util.handleError(response, 'One or more fields are missing.', 400);
     }
   },
 
@@ -69,7 +69,7 @@ export default ({ config, db }) => resource({  // eslint-disable-line
   /** DELETE /:id - Delete a given entity */
   delete({ user }, response) {
     User.remove({ _id: user._id }, (err, user) => { // eslint-disable-line
-      if (err) return Util.handleError(404, response, err);
+      if (err) return Util.handleError(response, err, 404);
       return response.json({
         message: `All info for user ${user._id} has been removed.`, // eslint-disable-line
       });
