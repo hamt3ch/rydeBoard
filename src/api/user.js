@@ -20,7 +20,7 @@ export default ({ config, db }) => resource({  // eslint-disable-line
   /** GET / - List all users */
   index({ params }, response) {
     User.find().sort('-date_created').exec((err, users) => {
-      if (err) return Util.handleError(response, err);
+      if (err) return Util.handleError(500, response, err);
       return response.json(users);
     });
   },
@@ -34,10 +34,10 @@ export default ({ config, db }) => resource({  // eslint-disable-line
         } else {
           const userToSave = new User(body);
           userToSave.hashPassword(userToSave.password, (hashError, hashedPassword) => {
-            if (hashError) return Util.handleError(response, hashError);
+            if (hashError) return Util.handleError(500, response, hashError);
             userToSave.password = hashedPassword;
             userToSave.save((saveError) => {
-              if (saveError) return Util.handleError(response, saveError);
+              if (saveError) return Util.handleError(500, response, saveError);
               return response.json(userToSave);
             });
             return true;
