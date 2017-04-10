@@ -78,7 +78,7 @@ export default ({ config, db }) => resource({  // eslint-disable-line
         const rideToSave = new Ride(data);
         rideToSave.save((err) => { // problem saving data to db
           if (err) {
-            response.status(400).send({ error: err.message });
+            response.status(500).send({ error: err.message });
             return false;
           }
           response.json(rideToSave); // Send back ride.json for confirmation
