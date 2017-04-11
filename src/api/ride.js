@@ -72,7 +72,7 @@ export default ({ config, db }) => resource({  // eslint-disable-line
   /** POST / - Create new ride */
   create({ body }, response) {
     if (!Util.allFieldsValid(body)) {
-      Util.handleError(400, response, 'One or more field is empty.');
+      Util.handleError(response, 'One or more field is empty.', 400);
     } else {
       configureBody(body, (data) => {
         const rideToSave = new Ride(data);
@@ -98,7 +98,7 @@ export default ({ config, db }) => resource({  // eslint-disable-line
   delete({ ride }, response) {
     const _id = ride._id; // eslint-disable-line
     Ride.remove({ _id }, (err, ride) => { // eslint-disable-line
-      if (err) return Util.handleError(404, response, err);
+      if (err) return Util.handleError(response, err, 400);
       return response.json({
         message: `Removed ride ${_id}`, // eslint-disable-line
       });

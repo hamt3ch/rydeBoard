@@ -36,6 +36,19 @@ test('POST /rides :Success - post new ride', async (t) => {
   await request(server).delete(`/api/rides/${idToDelete}`);
 });
 
+test('POST /rides :Fail - invalid user posting ride', async (t) => {
+  const res = await request(server)
+                    .post('/api/rides')
+                    .send({
+                      departure_location: 'Iceland',
+                      arrival_location: 'London, United Kingdom',
+                      departure_time: '12-06-2017 3:30 am',
+                      seats_available: 6,
+                      created_by: 'whoisthis',
+                    });
+  t.is(res.status, 500);
+});
+
 test('POST /rides :Fail - invalid fields', async (t) => {
   const res = await request(server)
                     .post('/api/rides')
