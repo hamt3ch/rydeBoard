@@ -18,7 +18,7 @@ export default ({ config, db }) => resource({  // eslint-disable-line
   },
 
   /** GET / - List all users */
-  index({ params }, response) {
+  index({ query }, response) {
     User.find().sort('-date_created').exec((err, users) => {
       if (err) return Util.handleError(response, err);
       return response.json(users);

@@ -59,8 +59,8 @@ export default ({ config, db }) => resource({  // eslint-disable-line
   },
 
   /** GET / - List all rides */
-  index({ params }, response) {
-    Ride.find()
+  index({ query }, response) {
+    Ride.find(query)
       .sort('-date_posted')
       .populate('created_by')
       .exec((err, rides) => {
@@ -76,9 +76,9 @@ export default ({ config, db }) => resource({  // eslint-disable-line
     } else {
       configureBody(body, (data) => {
         const rideToSave = new Ride(data);
-        rideToSave.save((err) => {
+        rideToSave.save((err, ride) => { // eslint-disable-line
           if (err) return Util.handleError(response, err);
-          return response.json(rideToSave);
+          return response.json(ride);
         });
       });
     }
