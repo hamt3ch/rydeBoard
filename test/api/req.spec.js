@@ -65,7 +65,7 @@ test('DELETE /rides :Success - remove ride', async (t) => {
                       arrival_location: 'London, United Kingdom',
                       departure_time: '12-06-2017 3:30am',
                       seats_available: 6,
-                      created_by: '58db64d8faff18761da07736',
+                      created_by: '58ed3ed036fe2e002987c46a',
                     });
 
   let idToDelete = createRes.body._id; // eslint-disable-line
@@ -92,6 +92,7 @@ test('GET /users :Success - ping endpoint', async (t) => {
 });
 
 test('POST /users :Success - create new user', async (t) => {
+  // add an if statement checking whether there is a user named Test Tester already
   const res = await request(server)
               .post('/api/users')
               .send({
