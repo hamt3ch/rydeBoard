@@ -29,19 +29,22 @@ export default ({ config, db }) => resource({  // eslint-disable-line
   create({ body }, response) {
     if (Util.allFieldsValid(body)) {
       User.findOne({ email: body.email }, (err, user) => {
-        if (user) {
-          Util.handleError(response, 'A user associated with this email already exists. Please use another email.', 400);
-        } else {
+        if (!user) {
           const userToSave = new User(body);
-          userToSave.hashPassword(userToSave.password, (hashError, hashedPassword) => {
-            if (hashError) return Util.handleError(response, hashError);
-            userToSave.password = hashedPassword;
-            userToSave.save((saveError) => {
-              if (saveError) return Util.handleError(response, saveError);
-              return response.json(userToSave);
+          if (userToSave.password) {
+            userToSave.hashPassword(userToSave.password, (hashError, hashedPassword) => {
+              if (hashError) Util.handleError(response, hashError);
+              userToSave.password = hashedPassword;
             });
-            return true;
+          }
+          userToSave.save((saveError) => {
+            if (saveError) Util.handleError(response, saveError);
+            response.json(userToSave);
           });
+        } else if (body.facebookId) { // if user exists and using facebook, log in
+          response.json(user);
+        } else {
+          Util.handleError(response, 'A user associated with this email already exists. Please use another email.', 400);
         }
       });
     } else {

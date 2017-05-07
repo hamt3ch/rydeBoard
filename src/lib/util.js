@@ -19,7 +19,7 @@ export default class Util {
       count += 1;
     }
 
-    if (count < 4) return false;
+    if (count < 3) return false;
     return true;
   }
 }

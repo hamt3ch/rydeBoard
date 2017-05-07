@@ -109,13 +109,12 @@ test('POST /users :Success - create new user', async (t) => {
   t.is(res.status, 200);
 });
 
-test('POST /users :Fail - missing password', async (t) => {
+test('POST /users :Fail - missing email', async (t) => {
   const res = await request(server)
               .post('/api/users')
               .send({
                 first_name: 'Test',
                 last_name: 'Tester',
-                email: 'test@test.com',
               });
   t.is(res.status, 400);
 });
