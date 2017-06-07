@@ -96,17 +96,18 @@ test('POST /users :Success - create new user', async (t) => {
   const res = await request(server)
               .post('/api/users')
               .send({
-                first_name: 'Test',
+                first_name: 'Jon',
                 last_name: 'Tester',
-                email: 'test@test.com',
+                email: 'ham@hnd.io',
                 password: 'test',
               });
-  t.is(res.body.last_name, 'Tester');
-  t.is(res.body.email, 'test@test.com');
+  console.log(res.body)
+  t.is(res.body.first_name, 'Jon');
+  t.is(res.body.email, 'ham@hnd.io');
   t.is(res.status, 200);
+
   let idToDelete = res.body._id; // eslint-disable-line
   await request(server).delete(`/api/users/${idToDelete}`);
-  t.is(res.status, 200);
 });
 
 test('POST /users :Fail - missing email', async (t) => {
@@ -140,7 +141,6 @@ test('POST /users :Fail - user already exists', async (t) => {
   t.is(res2.body.message, 'A user associated with this email already exists. Please use another email.');
   let idToDelete = res.body._id; // eslint-disable-line
   await request(server).delete(`/api/users/${idToDelete}`);
-  t.is(res.status, 200);
 });
 
 test('PUT /passengers/:id - Add user to passengers list', async (t) => {
