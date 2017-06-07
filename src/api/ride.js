@@ -63,7 +63,6 @@ export default ({ config, db }) => resource({  // eslint-disable-line
     Ride.find(query)
       .sort('-date_posted')
       .populate('created_by')
-      .populate('passengers')
       .exec((err, rides) => {
         if (err) return Util.handleError(response, err);
         return response.json(rides);

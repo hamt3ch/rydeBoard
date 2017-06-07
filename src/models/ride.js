@@ -14,6 +14,7 @@ const ride = new mongoose.Schema({
   departure_time: { type: String, required: true },
   passengers: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
   seats_available: Number,
+  stand_by_passengers: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
   // oneWay: Ride // if undefined >> oneWay Trip
   // else >> return Ride.Id of return trip
 });
