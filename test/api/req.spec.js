@@ -101,7 +101,6 @@ test('POST /users :Success - create new user', async (t) => {
                 email: 'ham@hnd.io',
                 password: 'test',
               });
-  console.log(res.body)
   t.is(res.body.first_name, 'Jon');
   t.is(res.body.email, 'ham@hnd.io');
   t.is(res.status, 200);
