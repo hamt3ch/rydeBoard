@@ -69,13 +69,12 @@ export default ({ config, db }) => resource({  // eslint-disable-line
   update({ ride, body }, response) {
     // Check if user is already in ride
     if (ride.passengers.indexOf(body.user_id) > -1) {
-      response.status(409);
-      response.json({ error: 'passenger already in list' });
+      return Util.handleError(response, 'passenger already in list', 409);
     }
     // Add user to ride
     ride.passengers.push(mongoose.Types.ObjectId(body.user_id));
     updatePassenger(response, ride);
-    response.json(getPassenger(ride));
+    return response.json(getPassenger(ride));
   },
 
   /** DELETE /:id - Delete a given entity */
