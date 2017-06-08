@@ -20,6 +20,7 @@ const updatePassenger = (response, rideToUpdate) => {
     const curRide = ride;
     if (err) return Util.handleError(response, err);
     curRide.passengers = rideToUpdate.passengers;
+    curRide.stand_by_passengers = rideToUpdate.stand_by_passengers;
     curRide.save((saveErr, updatedRide) => {
       if (saveErr) Util.handleError(response, saveErr);
       return updatedRide;
@@ -69,9 +70,9 @@ export default ({ config, db }) => resource({  // eslint-disable-line
   update({ ride, body }, response) {
     // Check if user is already in ride
     if (ride.passengers.indexOf(body.user_id) > -1) {
-      response.status(409);
-      response.json({ error: 'passenger already in list' });
+      Util.handleError(response, { error: 'passenger already in list' }, 409);
     }
+
     // Add user to ride
     ride.passengers.push(mongoose.Types.ObjectId(body.user_id));
     updatePassenger(response, ride);
