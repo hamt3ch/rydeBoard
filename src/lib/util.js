@@ -2,10 +2,9 @@ export default class Util {
   static handleError(response, error, status = 500) { // error will be a custom string or an object
     response.status(status);
     if (typeof error === 'string') {
-      response.send({ message: error });
-    } else {
-      response.send({ message: error.message });
+      return response.send({ message: error });
     }
+    return response.send({ message: error.message });
   }
 
   static allFieldsValid(body) {
