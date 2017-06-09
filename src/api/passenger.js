@@ -21,7 +21,7 @@ const updatePassenger = (response, rideToUpdate) => {
     if (err) return Util.handleError(response, err);
     curRide.passengers = rideToUpdate.passengers;
     curRide.save((saveErr, updatedRide) => {
-      if (saveErr) Util.handleError(response, saveErr);
+      if (saveErr) return Util.handleError(response, saveErr);
       return updatedRide;
     });
   });
