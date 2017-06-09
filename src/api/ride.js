@@ -33,8 +33,10 @@ const configureBody = (body, data) => {
   convertAddress([response.departure_location, response.arrival_location], (callback) => {
     response.departure_longitude = callback.departure.longitude;
     response.departure_latitude = callback.departure.latitude;
+    response.departure_coordinate = [callback.departure.longitude, callback.departure.latitude];
     response.arrival_longitude = callback.arrival.longitude;
     response.arrival_latitude = callback.arrival.latitude;
+    response.arrival_coordinate = [callback.arrival.longitude, callback.arrival.latitude];
     data(body);
   });
 };
