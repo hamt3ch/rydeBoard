@@ -5,4 +5,7 @@
         "jsx-a11y",
         "import"
     ],
+    "rules": {
+      "no-underscore-dangle": [0, { "allowAfterThis": true }],
+    },
 }

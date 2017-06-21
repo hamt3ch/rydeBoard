@@ -8,14 +8,14 @@ mongoose.Promise = global.Promise;
 /**
  * Helper methods
  */
-const getPassenger = (ride) => { // eslint-disable-line
+const getPassengers = (ride) => { // eslint-disable-line
   return {
     passengers: ride.passengers,
     stand_by: ride.stand_by_passengers,
   };
 };
 
-const updatePassenger = (response, rideToUpdate) => {
+const updatePassengersList = (response, rideToUpdate) => {
   Ride.findById(rideToUpdate._id, (err, ride) => { // eslint-disable-line
     const curRide = ride;
     if (err) return Util.handleError(response, err);
@@ -49,10 +49,9 @@ export default ({ config, db }) => resource({  // eslint-disable-line
     });
   },
 
-  /** GET / - List all rides */
+  /** GET / - List all passengers */
   index({ params }, response) {
-    response.status(404);
-    response.json({ error: 'no get for passenger without id' });
+    return Util.handleError(response, 'cannot retrieve passengers without ride id', 404);
   },
 
   /** POST / - Add new passenger to ride */
@@ -62,7 +61,7 @@ export default ({ config, db }) => resource({  // eslint-disable-line
 
   /** GET /:id - Return passengers from ride */
   read({ ride }, response) {
-    response.json(getPassenger(ride));
+    response.json(getPassengers(ride));
   },
 
   /** PUT /:id - Update passenger */
@@ -73,12 +72,20 @@ export default ({ config, db }) => resource({  // eslint-disable-line
     }
     // Add user to ride
     ride.passengers.push(mongoose.Types.ObjectId(body.user_id));
-    updatePassenger(response, ride);
-    return response.json(getPassenger(ride));
+    updatePassengersList(response, ride);
+    return response.json(getPassengers(ride));
   },
 
   /** DELETE /:id - Delete a given entity */
-  delete({ ride }, response) {
-    response.sendStatus(204);
+  delete({ ride, body }, response) {
+    // Check if user exists
+    if (ride.passengers.indexOf(body.user_id) < 0) {
+      return Util.handleError(response, 'passenger does not exist', 408);
+    }
+    // Remove user from ride
+    ride.passengers.splice(mongoose.Types.ObjectId(body.user_id), 1);
+    updatePassengersList(response, ride);
+    console.log(ride.passengers);
+    return response.json(getPassengers(ride));
   },
 });

@@ -32,7 +32,7 @@ test('POST /rides :Success - post new ride', async (t) => {
   t.is(res.body.departure_latitude, 64.963051);
   t.is(res.body.created_by, '58db64d8faff18761da07736');
   t.is(res.status, 200);
-  let idToDelete = res.body._id; // eslint-disable-line
+  let idToDelete = res.body._id;
   await request(server).delete(`/api/rides/${idToDelete}`);
 });
 
@@ -68,7 +68,7 @@ test('DELETE /rides :Success - remove ride', async (t) => {
                       created_by: '58ed3ed036fe2e002987c46a',
                     });
 
-  let idToDelete = createRes.body._id; // eslint-disable-line
+  let idToDelete = createRes.body._id;
   const res = await request(server)
                     .delete(`/api/rides/${idToDelete}`);
   t.is(res.body.message, `Removed ride ${idToDelete}`);
@@ -105,7 +105,7 @@ test('POST /users :Success - create new user', async (t) => {
   t.is(res.body.email, 'ham@hnd.io');
   t.is(res.status, 200);
 
-  let idToDelete = res.body._id; // eslint-disable-line
+  let idToDelete = res.body._id;
   await request(server).delete(`/api/users/${idToDelete}`);
 });
 
@@ -138,7 +138,7 @@ test('POST /users :Fail - user already exists', async (t) => {
               });
   t.is(res2.status, 400);
   t.is(res2.body.message, 'A user associated with this email already exists. Please use another email.');
-  let idToDelete = res.body._id; // eslint-disable-line
+  let idToDelete = res.body._id;
   await request(server).delete(`/api/users/${idToDelete}`);
 });
 
@@ -164,24 +164,39 @@ test('PUT /passengers/:id - Add user to passengers list', async (t) => {
   t.is(res.body.created_by, '58db64d8faff18761da07736');
   t.is(res.status, 200);
 
-  let myID = res.body._id; // eslint-disable-line
+  let rideId = res.body._id;
 
-  // 2 - Add passenger
+  // 2 - Add passengers
   const resPass = await request(server)
-                    .put(`/api/passengers/${myID}`)
+                    .put(`/api/passengers/${rideId}`)
                     .send({
                       user_id: '590e7747f019a32200085f01',
                       confirm: false,
                     });
-
   t.is(resPass.status, 200);
   t.is(resPass.body.passengers[0], '590e7747f019a32200085f01');
 
-  // 2 - Delete Ride
-  let idToDelete = myID; // eslint-disable-line
-  await request(server).delete(`/api/rides/${idToDelete}`);
-});
+  /* should not be necessary when removing the first passenger */
+  const resPass2 = await request(server)
+                    .put(`/api/passengers/${rideId}`)
+                    .send({
+                      user_id: '590e7747f019a32200085f02',
+                      confirm: false,
+                    });
+  t.is(resPass2.status, 200);
 
+  // 3 - Remove passenger
+  const deletePassReq = await request(server)
+                    .delete(`/api/passengers/${rideId}`)
+                    .send({
+                      user_id: '590e7747f019a32200085f01',
+                    });
+  t.is(deletePassReq.status, 200);
+
+  // 4 - Delete Ride
+  const deleteRideReq = await request(server).delete(`/api/rides/${rideId}`);
+  t.is(deleteRideReq.status, 200);
+});
 
 // TODO: Finsh writing these test
 /*
