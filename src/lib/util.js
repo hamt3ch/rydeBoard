@@ -40,26 +40,22 @@ export default class Util {
   */
   static formatQuery(body) {
     const formattedBody = {};
-    const coordsArr = [];
 
     // Format query for departures coordinates
     if (body.departure_coordinate != null) {
       const departureQuery = JSON.parse(body.departure_coordinate);
-      console.log(formatCoordinateQuery(departureQuery));
-      coordsArr.push({ departure_coordinate: formatCoordinateQuery(departureQuery)});
-      // formattedBody.departure_coordinate = formatCoordinateQuery(departureQuery);
+      // coordsArr.push({ departure_coordinate: formatCoordinateQuery(departureQuery) });
+      formattedBody.departure_coordinate = formatCoordinateQuery(departureQuery);
     }
 
-    // Format query for arrival coordinates
-    if (body.arrival_coordinate != null) {
-      const arrivalQuery = JSON.parse(body.arrival_coordinate);
-      console.log(formatCoordinateQuery(arrivalQuery));
-      coordsArr.push({ arrival_coordinate: formatCoordinateQuery(arrivalQuery)});
-      // formattedBody.arrival_coordinate = formatCoordinateQuery(arrivalQuery);
-    }
+    // TODO: Figure out to query arrival locations as well
+    // if (body.arrival_coordinate != null) {
+    //   const arrivalQuery = JSON.parse(body.arrival_coordinate);
+    //   console.log(formatCoordinateQuery(arrivalQuery));
+    //   coordsArr.push({ arrival_coordinate: formatCoordinateQuery(arrivalQuery)});
+    //   // formattedBody.arrival_coordinate = formatCoordinateQuery(arrivalQuery);
+    // }
 
-    formattedBody.$and = coordsArr;
-    console.log(formattedBody);
     return formattedBody;
   }
 }
