@@ -176,26 +176,18 @@ test('PUT /passengers/:id - Add user to passengers list', async (t) => {
   t.is(resPass.status, 200);
   t.is(resPass.body.passengers[0], '590e7747f019a32200085f01');
 
-  /* should not be necessary when removing the first passenger */
-  const resPass2 = await request(server)
-                    .put(`/api/passengers/${rideId}`)
-                    .send({
-                      user_id: '590e7747f019a32200085f02',
-                      confirm: false,
-                    });
-  t.is(resPass2.status, 200);
+  const getPassReq = await request(server).get(`/api/passengers/${rideId}`).expect(200);
 
   // 3 - Remove passenger
   const deletePassReq = await request(server)
                     .delete(`/api/passengers/${rideId}`)
                     .send({
                       user_id: '590e7747f019a32200085f01',
-                    });
-  t.is(deletePassReq.status, 200);
+                    })
+                    .expect(200);
 
-  // 4 - Delete Ride
-  const deleteRideReq = await request(server).delete(`/api/rides/${rideId}`);
-  t.is(deleteRideReq.status, 200);
+  // // 4 - Delete Ride
+  const deleteRideReq = await request(server).delete(`/api/rides/${rideId}`).expect(200);
 });
 
 // TODO: Finsh writing these test

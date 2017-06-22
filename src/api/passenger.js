@@ -82,10 +82,10 @@ export default ({ config, db }) => resource({  // eslint-disable-line
     if (ride.passengers.indexOf(body.user_id) < 0) {
       return Util.handleError(response, 'passenger does not exist', 408);
     }
+
     // Remove user from ride
-    ride.passengers.splice(mongoose.Types.ObjectId(body.user_id), 1);
+    ride.passengers.splice(ride.passengers.indexOf(body.user_id), 1);
     updatePassengersList(response, ride);
-    console.log(ride.passengers);
     return response.json(getPassengers(ride));
   },
 });
