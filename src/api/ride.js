@@ -62,7 +62,8 @@ export default ({ config, db }) => resource({  // eslint-disable-line
 
   /** GET / - List all rides */
   index({ query }, response) {
-    Ride.find(query)
+    const mQuery = Util.formatQuery(query);
+    Ride.find(mQuery)
       .sort('-date_posted')
       .populate('created_by')
       .populate('passengers')

@@ -1,3 +1,15 @@
+function formatCoordinateQuery(coords) {
+  return {
+    $near: {
+      $geometry: {
+        type: 'Point',
+        coordinates: coords,
+      },
+      $maxDistance: 1,
+    },
+  };
+}
+
 export default class Util {
   static handleError(response, error, status = 500) { // error will be a custom string or an object
     response.status(status);
@@ -20,5 +32,30 @@ export default class Util {
 
     if (count < 3) return false;
     return true;
+  }
+
+  /*
+    Any other formatting should be down in this method
+    when translating a url into mongo query
+  */
+  static formatQuery(body) {
+    const formattedBody = {};
+
+    // Format query for departures coordinates
+    if (body.departure_coordinate != null) {
+      const departureQuery = JSON.parse(body.departure_coordinate);
+      // coordsArr.push({ departure_coordinate: formatCoordinateQuery(departureQuery) });
+      formattedBody.departure_coordinate = formatCoordinateQuery(departureQuery);
+    }
+
+    // TODO: Figure out to query arrival locations as well
+    // if (body.arrival_coordinate != null) {
+    //   const arrivalQuery = JSON.parse(body.arrival_coordinate);
+    //   console.log(formatCoordinateQuery(arrivalQuery));
+    //   coordsArr.push({ arrival_coordinate: formatCoordinateQuery(arrivalQuery)});
+    //   // formattedBody.arrival_coordinate = formatCoordinateQuery(arrivalQuery);
+    // }
+
+    return formattedBody;
   }
 }
