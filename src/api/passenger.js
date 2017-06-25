@@ -16,15 +16,10 @@ const getPassengers = (ride, response) => { // eslint-disable-line
 };
 
 const updatePassengersList = (response, rideToUpdate) => {
-  Ride.findById(rideToUpdate, (err, ride) => { // eslint-disable-line
-    const curRide = ride;
-    if (err) return Util.handleError(response, err);
-    curRide.passengers = rideToUpdate.passengers;
-    curRide.save((saveErr, updatedRide) => {
-      if (saveErr) return Util.handleError(response, saveErr);
-      updatedRide.populate('passengers', (err, updatedRide) => {
-        return response.json(updatedRide.passengers);
-      });
+  Ride.findByIdAndUpdate(rideToUpdate, { $set: rideToUpdate }, { new: true }, (err, ride) => { // eslint-disable-line
+    if (err) return Util.handleError(response, err.message, 500);
+    ride.populate('passengers', (err, updatedRide) => {
+      return response.json(updatedRide.passengers);
     });
   });
 };
