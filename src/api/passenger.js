@@ -8,22 +8,17 @@ mongoose.Promise = global.Promise;
 /**
  * Helper methods
  */
-const getPassengers = (ride) => { // eslint-disable-line
-  return {
-    passengers: ride.passengers,
-    stand_by: ride.stand_by_passengers,
-  };
+const getPassengers = (ride, response) => { // eslint-disable-line
+  Ride.findById(ride).populate('passengers').exec((err, result) => {
+    if (err) return err;
+    return response.json(result.passengers);
+  });
 };
 
 const updatePassengersList = (response, rideToUpdate) => {
-  Ride.findById(rideToUpdate._id, (err, ride) => { // eslint-disable-line
-    const curRide = ride;
-    if (err) return Util.handleError(response, err);
-    curRide.passengers = rideToUpdate.passengers;
-    curRide.save((saveErr, updatedRide) => {
-      if (saveErr) return Util.handleError(response, saveErr);
-      return updatedRide;
-    });
+  Ride.findByIdAndUpdate(rideToUpdate, { $set: rideToUpdate }, { new: true }, (err, ride) => { // eslint-disable-line
+    if (err) return Util.handleError(response, err.message, 500);
+    ride.populate('passengers', (updateErr, updatedRide) => response.json(updatedRide.passengers));
   });
 };
 
@@ -61,7 +56,7 @@ export default ({ config, db }) => resource({  // eslint-disable-line
 
   /** GET /:id - Return passengers from ride */
   read({ ride }, response) {
-    response.json(getPassengers(ride));
+    getPassengers(ride, response);
   },
 
   /** PUT /:id - Update passenger */
@@ -72,8 +67,7 @@ export default ({ config, db }) => resource({  // eslint-disable-line
     }
     // Add user to ride
     ride.passengers.push(mongoose.Types.ObjectId(body.user_id));
-    updatePassengersList(response, ride);
-    return response.json(getPassengers(ride));
+    return updatePassengersList(response, ride);
   },
 
   /** DELETE /:id - Delete a given entity */
@@ -85,7 +79,6 @@ export default ({ config, db }) => resource({  // eslint-disable-line
 
     // Remove user from ride
     ride.passengers.splice(ride.passengers.indexOf(body.user_id), 1);
-    updatePassengersList(response, ride);
-    return response.json(getPassengers(ride));
+    return updatePassengersList(response, ride);
   },
 });
