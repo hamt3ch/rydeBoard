@@ -174,7 +174,8 @@ test('PUT /passengers/:id - Add user to passengers list', async (t) => {
                       confirm: false,
                     });
   t.is(resPass.status, 200);
-  t.is(resPass.body.passengers[0], '590e7747f019a32200085f01');
+  console.log(resPass.body)
+  t.is(resPass.body[0]._id, '590e7747f019a32200085f01');
 
   const getPassReq = await request(server).get(`/api/passengers/${rideId}`).expect(200);
 
