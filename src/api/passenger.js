@@ -18,9 +18,7 @@ const getPassengers = (ride, response) => { // eslint-disable-line
 const updatePassengersList = (response, rideToUpdate) => {
   Ride.findByIdAndUpdate(rideToUpdate, { $set: rideToUpdate }, { new: true }, (err, ride) => { // eslint-disable-line
     if (err) return Util.handleError(response, err.message, 500);
-    ride.populate('passengers', (err, updatedRide) => {
-      return response.json(updatedRide.passengers);
-    });
+    ride.populate('passengers', (updateErr, updatedRide) => response.json(updatedRide.passengers));
   });
 };
 
@@ -69,7 +67,7 @@ export default ({ config, db }) => resource({  // eslint-disable-line
     }
     // Add user to ride
     ride.passengers.push(mongoose.Types.ObjectId(body.user_id));
-    updatePassengersList(response, ride);
+    return updatePassengersList(response, ride);
   },
 
   /** DELETE /:id - Delete a given entity */
@@ -81,6 +79,6 @@ export default ({ config, db }) => resource({  // eslint-disable-line
 
     // Remove user from ride
     ride.passengers.splice(ride.passengers.indexOf(body.user_id), 1);
-    updatePassengersList(response, ride);
+    return updatePassengersList(response, ride);
   },
 });
