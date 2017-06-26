@@ -39,7 +39,7 @@ export default class Util {
     when translating a url into mongo query
   */
   static formatQuery(body) {
-    const formattedBody = {};
+    const formattedBody = body;
 
     // Format query for departures coordinates
     if (body.departure_coordinate != null) {
