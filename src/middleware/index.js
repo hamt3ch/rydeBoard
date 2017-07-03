@@ -1,9 +1,9 @@
 import { Router } from 'express';
 
-export default ({ config, db }) => {
-	let routes = Router();
+export default ({ config, db }) => {  // eslint-disable-line
+  const routes = Router();
 
-	// add middleware here
+  // add middleware here
 
-	return routes;
-}
+  return routes;
+};

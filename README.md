@@ -1,9 +1,5 @@
-Express & ES6 REST API Boilerplate
+Ryde Board
 ==================================
-
-[![bitHound Score](https://www.bithound.io/github/developit/express-es6-rest-api/badges/score.svg)](https://www.bithound.io/github/developit/express-es6-rest-api)
-
-This is a straightforward boilerplate for building REST APIs with ES6 and Express.
 
 - ES6 support via [babel](https://babeljs.io)
 - REST resources as middleware via [resource-router-middleware](https://github.com/developit/resource-router-middleware)
@@ -12,30 +8,9 @@ This is a straightforward boilerplate for building REST APIs with ES6 and Expres
 
 > Tip: If you are using [Mongoose](https://github.com/Automattic/mongoose), you can automatically expose your Models as REST resources using [restful-mongoose](https://git.io/restful-mongoose).
 
-Getting Started
----------------
-
-```sh
-# clone it
-git clone git@github.com:developit/express-es6-rest-api.git
-cd express-es6-rest-api
-
-# Make it your own
-rm -rf .git && git init && npm init
-
-# Install dependencies
-npm install
-
-# Start development live-reload server
-PORT=8080 npm run dev
-
-# Start production server:
-PORT=8080 npm start
-```
 Docker Support
 ------
 ```sh
-cd express-es6-rest-api
 
 # Build your docker
 docker build -t es6/api-service .
@@ -51,9 +26,51 @@ docker run -p 8080:8080 es6/api-service
 
 ```
 
+Install
+-------------------------
+Before using the service you must run the following commands in your terminal
+
+**Yarn**
+```sh
+$ yarn install
+```
+**NPM**
+```sh
+$ npm install
+```
+
+Start Development
+-------------------------
+To run project locally with hot reloading whenever code is changed inside the project use the following commands.
+
+**Yarn**
+```sh
+$ PORT=8080 yarn dev # Set port manually
+$ yarn dev # Automatically sets port to 8080
+```
+**NPM**
+```sh
+$ PORT=8080 npm dev # Set port manually
+$ npm dev # Automatically sets port to 8080
+```
+
+Deploy
+-------------------------
+If you have a [now.sh](https://now.sh) account setup. Running the following command will deploy an instance of this service to your account.
+
+**Yarn**
+```sh
+$ yarn deploy
+```
+**NPM**
+```sh
+$ npm deploy
+```
+
+
 Docker Demo
 -------------------------
-It's supposed to be pretty easy to take your Docker to your favourite cloud service, here's a demo of what's our Dockerized bolierplate is like: [https://docker-deployment-yudfxfiaja.now.sh/api](https://docker-deployment-yudfxfiaja.now.sh/api)
+It's supposed to be pretty easy to take your Docker to your favourite cloud service, here's a demo of what's our Dockerized bolierplate is like: [Ride endpoint](https://rydeboard-dev.now.sh/api/rides)
 
 License
 -------
