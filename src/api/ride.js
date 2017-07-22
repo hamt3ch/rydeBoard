@@ -75,7 +75,7 @@ export default ({ config, db }) => resource({  // eslint-disable-line
   /** POST / - Create new ride */
   create({ body }, response) {
     if (!Util.allFieldsValid(body)) {
-      Util.handleError(response, 'One or more field is empty.', 400);
+      Util.handleError(response, 'One or more fields are empty.', 400);
     } else {
       configureBody(body, (data) => {
         const rideToSave = new Ride(data);
