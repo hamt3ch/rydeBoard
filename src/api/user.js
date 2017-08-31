@@ -71,11 +71,9 @@ export default ({ config, db }) => resource({  // eslint-disable-line
 
   /** DELETE /:id - Delete a given entity */
   delete({ user }, response) {
-    User.remove({ _id: user._id }, (err, user) => { // eslint-disable-line
+    User.remove(user, (err) => { // eslint-disable-line
       if (err) return Util.handleError(response, err, 400);
-      return response.json({
-        message: `All info for user ${user._id} has been removed.`, // eslint-disable-line
-      });
+      return response.json(user);
     });
   },
 });

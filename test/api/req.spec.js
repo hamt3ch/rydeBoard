@@ -53,7 +53,7 @@ test('POST /rides :Fail - invalid fields', async (t) => {
   const res = await request(server)
                     .post('/api/rides')
                     .send({ foo: 'bar' });
-  t.is(res.body.message, 'One or more field is empty.');
+  t.is(res.body.message, 'One or more fields are empty.');
   t.is(res.status, 400);
 });
 
@@ -71,7 +71,6 @@ test('DELETE /rides :Success - remove ride', async (t) => {
   let idToDelete = createRes.body._id;
   const res = await request(server)
                     .delete(`/api/rides/${idToDelete}`);
-  t.is(res.body.message, `Removed ride ${idToDelete}`);
   t.is(res.status, 200);
 });
 
